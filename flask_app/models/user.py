@@ -11,7 +11,10 @@ class User:
     db_name = 'rsvp_schema'
 
     def __init__(self, data) -> None:
+        ## PK
         self.id = data["id"]
+
+        #Cols
         self.first_name = data["first_name"]
         self.last_name = data["last_name"]
         self.email = data["email"]
@@ -20,8 +23,11 @@ class User:
         self.updated_at = data["updated_at"]
 
 
+    # Create new user method
     @classmethod
     def save(cls, data):
+
+        # Successfull DB test
         query = """INSERT INTO users(first_name, last_name, email, password)
                     VALUES(%(first_name)s, %(last_name)s, %(email)s, %(password)s)"""
         
@@ -29,16 +35,20 @@ class User:
 
         return result
 
+    # Get all users !!Unsafe (password)
     @classmethod
     def get_all_users(cls):
+        # Successfull DB test
         query = """SELECT * FROM users"""
 
         result = connectToMySQL(cls.db_name).query_db(query)
 
         return result
 
+    #returns user by id !!Unsafe (password)
     @classmethod
     def get_user_by_id(cls, data):
+        # Successfull DB test
         query = """SELECT * FROM users WHERE id=%(id)s"""
 
         results = connectToMySQL(cls.db_name).query_db(query, data)
@@ -48,8 +58,10 @@ class User:
 
         return cls(results[0])
 
+    #Get user by email !!Unsafe (password)
     @classmethod
     def get_user_by_email(cls, data):
+        # Successfull DB test
         query = """SELECT * FROM users WHERE email=%(email)s"""
 
         results = connectToMySQL(cls.db_name).query_db(query, data)
@@ -59,8 +71,14 @@ class User:
 
         return cls(results[0])
 
+    #### If we need safe methods to get a user without password info write them here
+    #
+    #
+    #
+
     @classmethod
     def update_user(cls, data):
+        # Successfull DB test
         query = """UPDATE users SET first_name=%(first_name)s, last_name=%(last_name)s,
                     email=%(email)s, password=%(password)s
                     WHERE id=%(id)s"""
@@ -69,10 +87,13 @@ class User:
 
     @classmethod
     def delete(cls, data):
+        # Untested in DB
         query = "DELETE FROM users WHERE id=%(id)s"
 
         result = connectToMySQL(cls.db_name).query_db(query, data)
 
+
+    #Untested method
     @staticmethod
     def validate_registration(user):
         is_valid = True
