@@ -44,3 +44,14 @@ def register():
     user_info = user.User.save(data)
     print(user_info)
     return redirect("/")
+
+@app.route("/user/signout")
+def singout():
+    session.clear()
+    return redirect('/')
+
+
+#visible
+@app.route("/user/new/create_one_user")
+def create_one_user():
+    pass
