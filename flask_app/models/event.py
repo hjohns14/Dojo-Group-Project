@@ -35,7 +35,7 @@ class Event():
         return result
 
     @classmethod
-    def get_all_events(cls, data):
+    def get_all_events(cls):
         query = """SELECT * FROM events"""
 
         result = connectToMySQL(cls.db_name).query_db(query)
