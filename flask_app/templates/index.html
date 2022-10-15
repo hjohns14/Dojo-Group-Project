@@ -91,7 +91,7 @@
                     {% for event in events_array %}
                         <tr>
                             <td>{{event.name}}</td>
-                            <td>{{event.date}}</td>
+                            <td>{{event.date.strftime("%m/%d/%y")}}</td>
                             
                             <!-- This ishow you format the time -->
                             <td>{{event.time_start.strftime("%I:%M %p")}}</td>
