@@ -24,7 +24,7 @@
             </form>
         </div>
         <div>
-            <form method="post">
+            <form method="post" action="/events/new/create">
                 <label for="name">Name</label>
                 <input class="form-control" type="text" name="name">
                 <label for="date">Date</label>
@@ -41,6 +41,8 @@
                 <input class="form-control" type="text" name="options">
                 <label for="plus_one">plus_one</label>
                 <input class="form-control" type="text" name="plus_one">
+                <label for="user_id">user_id(testing purposes only)</label>
+                <input class="form-control" type="number" name="user_id">
                 <button class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -90,8 +92,11 @@
                         <tr>
                             <td>{{event.name}}</td>
                             <td>{{event.date}}</td>
-                            <td>{{event.time_start}}</td>
-                            <td>{{event.time_end}}</td>
+                            
+                            <!-- This ishow you format the time -->
+                            <td>{{event.time_start.strftime("%I:%M %p")}}</td>
+                            <td>{{event.time_end.strftime("%I:%M %p")}}</td>
+
                             <td>{{event.address}}</td>
                             <td>{{event.details}}</td>
                             <td>{{event.options}}</td>

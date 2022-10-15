@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import render_template, request, redirect, session, flash, url_for
 from flask_app import app
 from flask_app.models import user, event
@@ -14,8 +15,14 @@ def test():
     all_users = user.User.get_all_users()
     all_events = event.Event.get_all_events()
     user_array = [user.User(x) for x in all_users]
-    events_array = [event.Event(x) for x in all_events]
-    print(user_array)
+    events_array = []
+
+    ## This changes the *timedelta* to a *time* so we can format it
+    for x in all_events:
+        x["time_start"] = (datetime.min + x["time_start"]).time()
+        x["time_end"] = (datetime.min + x["time_end"]).time()
+        events_array.append(event.Event(x))
+
     return render_template("index.html", user_array=user_array, events_array=events_array)
 
 
