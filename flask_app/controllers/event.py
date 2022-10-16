@@ -5,6 +5,8 @@ from flask_app.models import user, event
 
 
 ### Hidden Routes
+
+# create
 @app.route("/events/new/create", methods=["POST"])
 def create_event():
     data = {
@@ -23,3 +25,43 @@ def create_event():
     
 
     return redirect("/")
+
+# update
+@app.route("/events/update/<int:id>", methods=["POST"])
+def edit_event():
+    pass
+
+# delete
+@app.route("events/delete/<int:id>")
+def delete_event():
+    pass
+
+# send email invite
+app.route("/events/view/<int:id>/invite")
+def invite_one():
+    pass
+
+
+
+
+# visible routes
+
+# dashboard/viewall
+@app.route("/")
+def index():
+    pass
+
+# create
+@app.route("/events/new/create_one")
+def create_one():
+    pass
+
+# edit
+@app.route("/events/edit/<int:id>")
+def edit_one():
+    pass
+
+# view one
+@app.route("/events/view/<int:id>")
+def view_one():
+    pass
