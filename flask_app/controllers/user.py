@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt(app)
 
-@app.route("/")
+@app.route("/test_data")
 def main():
     return redirect("/test")
 
@@ -30,28 +30,46 @@ def test():
 ## Hidden routes
 @app.route("/user/new/create", methods=["POST"])
 def register():
-    #Validations Here
-
-    hash_pass = bcrypt.generate_password_hash(request.form["password"])
 
     data = {
-        "first_name": request.form['first_name'],
-        "last_name": request.form['last_name'],
-        "email": request.form['email'],
-        "password": hash_pass,
+        "first_name": request.form["first_name"],
+        "last_name": request.form["last_name"],
+        "email": request.form["email"],
+        "password": request.form["password"],
     }
 
-    user_info = user.User.save(data)
-    print(user_info)
-    return redirect("/")
+    if request.form["confirm_password"] != request.form["password"]:
+        flash("Passwords do not match")
+        return redirect("/")
+    if user.User.check_if_email_in_system(data):
+        flash("Email already taken")
+        return redirect("/")
 
-@app.route("/user/signout")
-def singout():
+    hash_pass = bcrypt.generate_password_hash(request.form["password"])
+    data["password"] = hash_pass
+    session["user_id"] = user.User.save_user(data)
+    # we might need two separate pages for signed in vs non signed in people or just
+    return redirect("/dashboard")
+
+@app.route("/user/sign_in")
+def sign_in():
+    data = {
+        'email':request.form['email'],
+    }
+    user_in_db = user.User.get_user_by_email(data)
+    
+    if not user_in_db:
+        flash('Invalid Email/Password', 'sign_in')
+        return redirect('/')
+    if not bcrypt.check_password_hash(user_in_db.password, request.form['password']):
+        flash('Invalid Email/Password', 'sign_in')
+        return redirect('/')
+    session['user_id'] = user_in_db.id
+    return redirect('/dashboard')
+
+
+@app.route('/signout')
+def signout():
     session.clear()
     return redirect('/')
 
-
-#visible
-@app.route("/user/new/create_one_user")
-def create_one_user():
-    pass

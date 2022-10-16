@@ -71,6 +71,16 @@ class User:
 
         return cls(results[0])
 
+    @classmethod
+    def check_if_email_in_system(cls, data):
+        query = "SELECT * FROM users WHERE email = %(email)s"
+        results = connectToMySQL(cls.db).query_db(query, data)
+        # if the query returns nothing, it is false.
+        if not results:
+            return False
+        else:
+            return True
+
     #### If we need safe methods to get a user without password info write them here
     #
     #
