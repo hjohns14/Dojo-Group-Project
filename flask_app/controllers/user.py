@@ -6,8 +6,9 @@ from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt(app)
 
+# view all users and data/tester
 @app.route("/test_data")
-def main():
+def test_data():
     return redirect("/test")
 
 @app.route('/test')
@@ -23,14 +24,16 @@ def test():
         x["time_end"] = (datetime.min + x["time_end"]).time()
         events_array.append(event.Event(x))
 
-    return render_template("index.html", user_array=user_array, events_array=events_array)
+    return render_template("tester.html", user_array=user_array, events_array=events_array)
 
+# Login/registration page
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-
-## Hidden routes
+# create user
 @app.route("/user/new/create", methods=["POST"])
 def register():
-
     data = {
         "first_name": request.form["first_name"],
         "last_name": request.form["last_name"],
@@ -47,11 +50,12 @@ def register():
 
     hash_pass = bcrypt.generate_password_hash(request.form["password"])
     data["password"] = hash_pass
-    session["user_id"] = user.User.save_user(data)
+    session["user_id"] = user.User.save(data)
     # we might need two separate pages for signed in vs non signed in people or just
     return redirect("/dashboard")
 
-@app.route("/user/sign_in")
+# sign in
+@app.route("/user/sign_in", methods=["POST"])
 def sign_in():
     data = {
         'email':request.form['email'],

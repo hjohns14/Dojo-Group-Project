@@ -50,8 +50,11 @@ class Event():
 
         if len(result) == 0:
             return False
+            
+        # changed the return to just result, was what it was below
 
-        return cls(result[0])
+        # return cls(result[0])
+        return result
 
     @classmethod
     def update(cls, data):

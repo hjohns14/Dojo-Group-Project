@@ -20,11 +20,13 @@ def create_event():
         "details": request.form["details"],
         "options": request.form["options"],
         "plus_one": request.form["plus_one"],
-        "user_id": request.form["user_id"]
+        "user_id": session["user_id"]
     }
 
-    if not event.Event.validate_event(data):
-        return redirect("/events/new/create_one")
+    # validate event not currently working
+
+    # if not event.Event.validate_event(data):
+    #     return redirect("/events/new/create_one")
 
     event.Event.create(data)
     return redirect("/dashboard")
@@ -44,13 +46,16 @@ def edit_event(id):
         'options': request.form['options'],
         'plus_one': request.form['plus_one'],
     }
-    if not event.Event.validate_event(data):
-        return redirect(f"/events/edit{id}")
+
+    # validate event not currently working
+    # if not event.Event.validate_event(data):
+    #     return redirect(f"/events/edit/{id}")
+
     event.Event.update(data)
     return redirect("/dashboard")
 
 # delete
-@app.route("events/delete/<int:id>")
+@app.route("/events/delete/<int:id>")
 def delete_event(id):
     if "user_id" not in session:
         return redirect('/')
@@ -58,7 +63,7 @@ def delete_event(id):
         'id':id
     }
     event.Event.delete(data)
-    return redirect("dashboard")
+    return redirect("/dashboard")
 
 
 # send email invite
@@ -66,14 +71,11 @@ app.route("/events/view/<int:id>/invite")
 def invite_one():
     pass
 
-
-
-
 # visible routes
 
 # dashboard/viewall
 @app.route("/dashboard")
-def index():
+def dashboard():
     if "user_id" not in session:
         return redirect("/")
     data = {
@@ -99,13 +101,13 @@ def edit_one(id):
         "id":id
     }
     this_event=event.Event.get_event_by_id(event_data)
-    return render_template("edit_one_event", this_event=this_event)
+    return render_template("edit_one_event.html", this_event=this_event)
 
 # view one
 @app.route("/events/view/<int:id>")
 def view_one(id):
     if "user_id" not in session:
-        return redirect("/")
+        return redirect(f"/non_user/events/view/{id}")
     event_data={
         "id":id
     }
@@ -114,5 +116,16 @@ def view_one(id):
     }
     user_info = user.User.get_user_by_id(user_data)
     one_event=event.Event.get_event_by_id(event_data)
-    return render_template("show_one_event.html", one_event=one_event, user_info=user_info)
+    return render_template("show_one_event_user.html", one_event=one_event, user_info=user_info)
+
+@app.route("/non_user/events/view/<int:id>")
+def view_one_non_user(id):
+    if "user_id" in session:
+        return redirect(f"/events/view/{id}")
+    event_data={
+        "id":id
+    }
+    one_event=event.Event.get_event_by_id(event_data)
+    print(one_event)
+    return render_template("show_one_event_non_user.html", one_event=one_event)
 

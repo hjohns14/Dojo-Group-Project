@@ -74,7 +74,7 @@ class User:
     @classmethod
     def check_if_email_in_system(cls, data):
         query = "SELECT * FROM users WHERE email = %(email)s"
-        results = connectToMySQL(cls.db).query_db(query, data)
+        results = connectToMySQL(cls.db_name).query_db(query, data)
         # if the query returns nothing, it is false.
         if not results:
             return False
