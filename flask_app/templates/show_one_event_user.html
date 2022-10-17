@@ -57,6 +57,13 @@
         <input type="text" name="first_name">
         <label for="last_name">Last name</label>
         <input type="text" name="last_name">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <form action="/events/view/{{data.id}}/invite" method="post">
+        <h2>Invite someone to the event!</h2>
+        <label for="email">Email</label>
+        <input type="text" name="email">
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     {% endfor %}
 

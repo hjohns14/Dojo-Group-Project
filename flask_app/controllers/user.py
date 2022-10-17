@@ -29,6 +29,8 @@ def test():
 # Login/registration page
 @app.route('/')
 def index():
+    if "user_id" in session:
+        return redirect("/dashboard")
     return render_template('index.html')
 
 # create user
