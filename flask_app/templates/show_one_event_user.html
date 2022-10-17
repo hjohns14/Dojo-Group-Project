@@ -32,10 +32,9 @@
                 </tr>
             </thead>
             <tbody>
-                {% for data in one_event %}
+    {% for data in one_event %}
                     <tr>
                         <td>{{data.name}}</td>
-                        <td>{{data.date.strftime("%m/%d/%y")}}</td>
                         
                         <!-- This ishow you format the time -->
                         <td>{{data.time_start}}</td>
@@ -47,11 +46,19 @@
                         <td>{{data.plus_one}}</td>
                         <td><a href="/events/view/{{data.id}}">view</a></td>
                         <td><a href="/events/delete/{{data.id}}">delete</a></td>
-
+                        <td><a href="/events/edit/{{data.id}}">edit</a></td>
                     </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
+    <form action="/events/view/{{data.id}}/attend" method="post">
+        <h2>Are you attending the event?</h2>
+        <label for="first_name">First name</label>
+        <input type="text" name="first_name">
+        <label for="last_name">Last name</label>
+        <input type="text" name="last_name">
+    </form>
+    {% endfor %}
+
 </body>
 </html>

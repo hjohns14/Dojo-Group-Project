@@ -32,7 +32,7 @@ def create_event():
     return redirect("/dashboard")
 
 # edit/update
-@app.route("/events/update/<int:id>", methods=["POST"])
+@app.route("/events/update/<int:id>", methods=["post"])
 def edit_event(id):
     if "user_id" not in session:
         return redirect("/")
@@ -43,8 +43,11 @@ def edit_event(id):
         'time_start': request.form['time_start'],
         'time_end': request.form['time_end'],
         'address': request.form['address'],
+        "details": request.form["details"],
         'options': request.form['options'],
         'plus_one': request.form['plus_one'],
+        "user_id": session["user_id"]
+
     }
 
     # validate event not currently working
@@ -64,6 +67,13 @@ def delete_event(id):
     }
     event.Event.delete(data)
     return redirect("/dashboard")
+
+@app.route("/events/view/<int:id>/attend", methods=["POST"])
+def attend_event():
+    if "user_id" in session:
+        pass
+    if "user_id" not in session:
+        pass
 
 
 # send email invite
@@ -116,6 +126,7 @@ def view_one(id):
     }
     user_info = user.User.get_user_by_id(user_data)
     one_event=event.Event.get_event_by_id(event_data)
+    print(one_event)
     return render_template("show_one_event_user.html", one_event=one_event, user_info=user_info)
 
 @app.route("/non_user/events/view/<int:id>")

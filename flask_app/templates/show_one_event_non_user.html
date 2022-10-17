@@ -10,7 +10,7 @@
 </head>
 <body>
     <form action="/">
-        <button class="btn btn-danger" type="submit">Sign up</button>
+        <button class="btn btn-danger" type="submit">Create your own events!</button>
     </form>
     <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
     <div>
@@ -37,12 +37,10 @@
                         <!-- This ishow you format the time -->
                         <td>{{data.time_start}}</td>
                         <td>{{data.time_end}}</td>
-
                         <td>{{data.address}}</td>
                         <td>{{data.details}}</td>
                         <td>{{data.options}}</td>
                         <td>{{data.plus_one}}</td>
-
                     </tr>
                 {% endfor %}
             </tbody>

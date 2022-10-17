@@ -59,11 +59,10 @@ class Event():
     @classmethod
     def update(cls, data):
         # Untested in DB
-        query = """UPDATE events SET name=%(name)s, date=%(date)s, time_start=%(time_start)s,
-                    time_end=%(time_end)s, address=%(address)s, details=%(details)s, options=%(options)s, 
-                    plus_one=%(plus_one)s, user_id=%(user_id)s WHERE id=%(id)s"""
+        query = "UPDATE events SET name=%(name)s, date=%(date)s, time_start=%(time_start)s, time_end=%(time_end)s, address=%(address)s, details=%(details)s, options=%(options)s, plus_one=%(plus_one)s, user_id=%(user_id)s WHERE id=%(id)s"
 
         result = connectToMySQL(cls.db_name).query_db(query, data)
+        return result
 
     
     @classmethod
