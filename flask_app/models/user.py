@@ -3,6 +3,8 @@ from flask_app import app
 from flask import flash
 from flask_bcrypt import Bcrypt
 import re
+from flask_app.models import event
+
 
 bcrypt = Bcrypt(app)
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -21,6 +23,37 @@ class User:
         self.password = data["password"]
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
+
+        self.events=[]
+
+    @classmethod
+    def get_one_user_with_events(cls, data):
+        query = "SELECT * FROM users LEFT JOIN events ON users.id = events.user_id WHERE users.id = %(user_id)s"
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        if len(results) == 0:
+            return None
+        else:
+            user_instance = cls(results[0])
+            for this_event_dictionary in results:
+                if this_event_dictionary['events.id'] == None:
+                    break
+                new_event_dictionary = {
+                    "id": this_event_dictionary['events.id'],
+                    "user_id":this_event_dictionary['user_id'],
+                    "name": this_event_dictionary['name'],
+                    "date": this_event_dictionary['date'],
+                    "time_start": this_event_dictionary['time_start'],
+                    "time_end": this_event_dictionary['time_end'],
+                    "address": this_event_dictionary['address'],
+                    "details": this_event_dictionary['details'],
+                    "options": this_event_dictionary['options'],
+                    "plus_one": this_event_dictionary['plus_one'],
+                    "created_at": this_event_dictionary['events.created_at'],
+                    "updated_at": this_event_dictionary['events.updated_at']
+                }
+                this_event_object = event.Event(new_event_dictionary)
+                user_instance.events.append(this_event_object)
+            return user_instance
 
 
     # Create new user method

@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app import app
+from flask_app.models import user
 
 class Event():
     db_name = 'rsvp_schema'
@@ -21,6 +21,8 @@ class Event():
         
         ## FK
         self.user_id = data["user_id"]
+        # keep track of who made the event
+        self.creator = None
 
     @classmethod
     def create(cls, data):
@@ -43,6 +45,31 @@ class Event():
         return result
 
     @classmethod
+    def get_event_by_id_for_one_user(cls, data):
+        query ="""SELECT * FROM events JOIN users on users.id = events.user_id WHERE events.id=%(id)s"""
+
+        result = connectToMySQL(cls.db_name).query_db(query, data)
+
+        if len(result) == 0:
+            return False
+        else:
+            print(result,"result")
+            event = cls(result[0])
+            user_data = {
+                "id":result[0]['users.id'],
+                "first_name":result[0]['first_name'],
+                "last_name":result[0]['last_name'],
+                "email":result[0]['email'],
+                "password":result[0]['password'],
+                "created_at":result[0]['users.created_at'],
+                "updated_at":result[0]['users.updated_at']
+            }
+            event_maker = user.User(user_data)
+            event.creator = event_maker
+            print(event)
+            return event
+
+    @classmethod
     def get_event_by_id(cls, data):
         query ="""SELECT * FROM events WHERE id=%(id)s"""
 
@@ -50,10 +77,6 @@ class Event():
 
         if len(result) == 0:
             return False
-            
-        # changed the return to just result, was what it was below
-
-        # return cls(result[0])
         return result
 
     @classmethod
@@ -81,3 +104,5 @@ class Event():
             isValid = False
 
         return isValid
+
+    

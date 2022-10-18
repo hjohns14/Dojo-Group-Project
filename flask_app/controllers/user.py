@@ -73,9 +73,28 @@ def sign_in():
     session['user_id'] = user_in_db.id
     return redirect('/dashboard')
 
+# view your events
+@app.route("/user/your_events")
+def your_events():
+    if "user_id" not in session:
+        return redirect('/')
+    
+    user_data = {
+        "id":session['user_id']
+    }
+    event_data = {
+        "user_id":user_data['id']
+    }
+    user_data = user.User.get_user_by_id(user_data)
+    events = user.User.get_one_user_with_events(event_data)
+    return render_template('user_events.html', user_data=user_data, events=events)
+
+
 
 @app.route('/signout')
 def signout():
     session.clear()
     return redirect('/')
 
+
+#add if user_id not in session for edit routes
