@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <title>View Event</title>
+</head>
+<body>
+    {% if logged_in %}
+    <div class="buttons">
+        <form action="/dashboard">
+            <div class="create-button">
+                <button class="btn btn-primary" type="submit">Events</button>
+            </div>
+        </form> 
+        <form action="/signout">
+        <div class="logout-button">
+            <button class="btn btn-danger" type="submit">Logout</button>
+        </div>
+        </form>
+    </div>
+    {% endif %}
+    <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
+    <div>
+        <h3>{{ one_event.name }}</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Address</th>
+                    <th>Description</th>
+                    <th>Attire and Refreshments</th>
+                    <th>Maximum Number of Allowed Guests</th>
+                    <th>Private (Type "0") or Public Event (Type "1")</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>{{one_event.date}}</td>
+                        <td>{{one_event.time_start}}</td>
+                        <td>{{one_event.time_end}}</td>
+                        <td>{{one_event.address}}</td>
+                        <td>{{one_event.details}}</td>
+                        <td>{{one_event.options}}</td>
+                        <td>{{one_event.guests}}</td>
+                        <td>{{one_event.public}}</td>
+                    </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- The div below is supposed to be a display table that will show all the attending registered users, To Be Finished At Some Point -->
+    <!-- <div>
+        <h3>See Registered Users Who are Going!</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Attending</th>
+                    <th>Number of Guests</th>
+                </tr>
+            </thead>
+            <tbody>
+                one_event.users_invites is list of all users who were invited or are attending an event - must loop through this
+                must also redo model to add the name and not just the user_id to do this
+                    <tr>
+                        {# <td>{{invite.name}}</td> #}
+
+                    </tr>
+
+            </tbody>
+        </table>
+    </div> -->
+
+    {% if the_creator %}
+        <div class="bot-invite">
+            <form action="/events/view/{{ one_event.id }}/invite" method="post">
+                <h2>Invite someone to the event!</h2>
+                <label for="name">Name</label>
+                <input type="text" name="name">
+                <label for="email">Email</label>
+                <input type="text" name="email">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    {% elif (not logged_in) and (not token) %}
+        <div>
+            <h2>Register</h2>
+            <p>Want to keep track of your events and have the option to change your RSVP?</p>
+            <a href="/">Sign Up</a>
+        </div>
+        <div>
+            <h2>Attend</h2>
+            <form action="">
+                <!-- This form should have items for name, email, additional guests, and attending status to add a random person's entry into non_user_inviteees.  To be finished by someone? -->
+            </form>
+        </div>
+    {% elif (not logged_in) and (token) %}
+        <div>
+            <h2>Attend</h2>
+            <form method="post" action="">
+                <label for="name">Name</label>
+                <input class="form-control" value={{ token_entry["name"] }} type="text" name="name">
+                <label for="email">Email (can't change)</label>
+                <input class="form-control" value={{ token_entry["email"] }} type="date" name="email">
+                <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
+                <input class="form-control" value={ token_entry["attending"] }} type="text" name="attending">
+                <label for="guest_number">Guest Number</label>
+                <input class="form-control" value={{ token_entry["guest_number"] }} type="text" name="guest_number">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+        <div>
+            <h2>Register</h2>
+            <!-- this will be a special register that will both create a new user and transfer an existing token entry into a user_invitee table -->
+        </div>
+    {% elif logged_in %}
+        <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
+        <div>
+            <h2>Attend</h2>
+            <form action="" method="post">
+                <label for="guest_number">Additional Guests</label>
+                <input type="text" name="guest_number">
+                <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
+                <input class="form-control" type="text" name="attending">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <!-- hidden input with session["user_id"] -->
+            </form>
+        </div>
+    {% endif %}
+
+</body>
+</html>

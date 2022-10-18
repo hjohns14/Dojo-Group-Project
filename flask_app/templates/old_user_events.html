@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <title>Document</title>
+</head>
+<body>
+    <div class="buttons">
+        <form action="/events/new/create_one">
+            <div class="create-button">
+                <button class="btn btn-primary" type="submit">Create a new event</button>
+            </div>
+    </form> 
+    <form action="/dashboard">
+        <div class="events-button">
+            <button class="btn btn-success" type="submit">Dashboard</button>
+        </div>
+    </form>
+    <form action="/signout">
+        <div class="logout-button">
+            <button class="btn btn-danger" type="submit">Logout</button>
+        </div>
+    </form>
+</div>
+    <div>
+        {% for i in events.events %}
+        <p>{{ i.name }} <a class="btn btn-secondary btn-sm active" role="button" href="/magazine/delete/{{i.id}}">delete</a>
+            <a class="btn btn-secondary btn-sm active" role="button" href="/events/view/{{i.id}}">view</a> 
+            <a class="btn btn-secondary btn-sm active" role="button" href="/events/edit/{{i.id}}">edit</a>
+        </p>
+        {% endfor %}
+    </div>
+</body>
+</html>

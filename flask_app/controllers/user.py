@@ -36,24 +36,18 @@ def index():
 # create user
 @app.route("/user/new/create", methods=["POST"])
 def register():
+    #validate_user checks for password matching and the use of an existing email
+    if not user.User.validate_user(request.form):
+        return redirect("/")
     data = {
         "first_name": request.form["first_name"],
         "last_name": request.form["last_name"],
         "email": request.form["email"],
         "password": request.form["password"],
     }
-
-    if request.form["confirm_password"] != request.form["password"]:
-        flash("Passwords do not match")
-        return redirect("/")
-    if user.User.check_if_email_in_system(data):
-        flash("Email already taken")
-        return redirect("/")
-
     hash_pass = bcrypt.generate_password_hash(request.form["password"])
     data["password"] = hash_pass
     session["user_id"] = user.User.save(data)
-    # we might need two separate pages for signed in vs non signed in people or just
     return redirect("/dashboard")
 
 # sign in
@@ -73,28 +67,25 @@ def sign_in():
     session['user_id'] = user_in_db.id
     return redirect('/dashboard')
 
+#created separate table in "/dashboard" to display user's own events
+
 # view your events
-@app.route("/user/your_events")
-def your_events():
-    if "user_id" not in session:
-        return redirect('/')
+# @app.route("/user/your_events")
+# def your_events():
+#     if "user_id" not in session:
+#         return redirect('/')
     
-    user_data = {
-        "id":session['user_id']
-    }
-    event_data = {
-        "user_id":user_data['id']
-    }
-    user_data = user.User.get_user_by_id(user_data)
-    events = user.User.get_one_user_with_events(event_data)
-    return render_template('user_events.html', user_data=user_data, events=events)
-
-
+#     user_data = {
+#         "id":session['user_id']
+#     }
+#     event_data = {
+#         "user_id":user_data['id']
+#     }
+#     user_data = user.User.get_user_by_id(user_data)
+#     events = user.User.get_one_user_with_events(event_data)
+#     return render_template('user_events.html', user_data=user_data, events=events)
 
 @app.route('/signout')
 def signout():
     session.clear()
     return redirect('/')
-
-
-#add if user_id not in session for edit routes

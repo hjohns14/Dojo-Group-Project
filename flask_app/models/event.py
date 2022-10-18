@@ -15,7 +15,9 @@ class Event():
         self.address = data["address"]
         self.details = data["details"]
         self.options = data["options"]
-        self.plus_one = data["plus_one"]
+        self.guests = data["guests"]
+        self.geodata = "" # leave blank for now unless Cody may need this
+        self.public = data["public"] #!!!!!!! 0 is no public or private; 1 is public event
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
         
@@ -24,25 +26,81 @@ class Event():
         # keep track of who made the event
         self.creator = None
 
+        #user_invites stores many to many relationship in list format for user_invitees table [user_id, event_id, guest_number, attending]
+        self.users_invites = []
+
     @classmethod
     def create(cls, data):
         # Successfull test in DB
         query = """INSERT INTO events(name, date, time_start, time_end, address,
-                    details, options, plus_one, user_id)
+                    details, options, guests, geodata, public, user_id)
                     VALUES(%(name)s, %(date)s, %(time_start)s, %(time_end)s, %(address)s,
-                    %(details)s, %(options)s, %(plus_one)s, %(user_id)s)"""
-
+                    %(details)s, %(options)s, %(guests)s, "NULL", %(public)s, %(user_id)s)"""
         result = connectToMySQL(cls.db_name).query_db(query, data)
-
         return result
 
     @classmethod
     def get_all_events(cls):
         query = """SELECT * FROM events"""
-
         result = connectToMySQL(cls.db_name).query_db(query)
+        event_list = []
+        for row in result:
+            event_obj = cls(row)
+            data = {"id" : event_obj.id}
+            query ="""SELECT * FROM user_invitees WHERE event_id=%(id)s"""
+            result = connectToMySQL(cls.db_name).query_db(query, data)
+            for invite in result:
+                record_list = [invite["user_id"], invite["event_id"], invite["guest_number"], invite["attending"]]
+                event_obj.users_invites.append(record_list)
+            event_list.append(event_obj)
+        return event_list
 
+    @classmethod
+    def get_event_by_id(cls, data):
+        query ="""SELECT * FROM events WHERE id=%(id)s"""
+        result = connectToMySQL(cls.db_name).query_db(query, data)
+        if len(result) == 0:
+            return False
+        event_obj = cls(result[0])
+        invitee_data = {"id" : event_obj.id}
+        query ="""SELECT * FROM user_invitees WHERE event_id=%(id)s"""
+        result2 = connectToMySQL(cls.db_name).query_db(query, invitee_data)
+        for invite in result2:
+            record_list = [invite["user_id"], invite["event_id"], invite["guest_number"], invite["attending"]]
+            event_obj.users_invites.append(record_list)
+        return event_obj
+
+    @classmethod
+    def update(cls, data):
+        # Untested in DB
+        query = "UPDATE events SET name=%(name)s, date=%(date)s, time_start=%(time_start)s, time_end=%(time_end)s, address=%(address)s, details=%(details)s, options=%(options)s, guests=%(guests)s, public=%(public)s, user_id=%(user_id)s WHERE id=%(id)s"
+        result = connectToMySQL(cls.db_name).query_db(query, data)
         return result
+
+    @classmethod
+    def delete(cls, data):
+        query = """DELETE FROM events WHERE id=%(id)s"""
+        result = connectToMySQL(cls.db_name).query_db(query, data)
+        return result
+
+    @staticmethod
+    def validate_event(data):
+        #provide code to validate all aspects of an event
+        #maybe options can be blank or add NULL if none?
+        #geodata should be editer later by the API code
+        return True
+        
+        isValid = True
+        # Validations (we can decide what we want to validate later on and add here)
+        if len(data['name'] < 2):
+            isValid = False
+        return isValid
+
+
+
+
+
+
 
     @classmethod
     def get_event_by_id_for_one_user(cls, data):
@@ -68,41 +126,3 @@ class Event():
             event.creator = event_maker
             print(event)
             return event
-
-    @classmethod
-    def get_event_by_id(cls, data):
-        query ="""SELECT * FROM events WHERE id=%(id)s"""
-
-        result = connectToMySQL(cls.db_name).query_db(query, data)
-
-        if len(result) == 0:
-            return False
-        return result
-
-    @classmethod
-    def update(cls, data):
-        # Untested in DB
-        query = "UPDATE events SET name=%(name)s, date=%(date)s, time_start=%(time_start)s, time_end=%(time_end)s, address=%(address)s, details=%(details)s, options=%(options)s, plus_one=%(plus_one)s, user_id=%(user_id)s WHERE id=%(id)s"
-
-        result = connectToMySQL(cls.db_name).query_db(query, data)
-        return result
-
-    
-    @classmethod
-    def delete(cls, data):
-        query = """DELETE FROM events WHERE id=%(id)s"""
-
-        connectToMySQL(cls.db_name).query_db(query, data)
-
-
-    @staticmethod
-    def validate_event(data):
-        isValid = True
-
-        # Validations (we can decide what we want to validate later on and add here)
-        if len(data['name'] < 2):
-            isValid = False
-
-        return isValid
-
-    
