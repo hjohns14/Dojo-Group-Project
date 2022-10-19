@@ -8,7 +8,14 @@
     <title>Document</title>
 </head>
 <body>
+<<<<<<< Updated upstream
     <div>
+=======
+    <div class="create-edit-title">
+        <h1>Create Event</h1>
+    </div>
+    <div class="edit-form">
+>>>>>>> Stashed changes
         <form method="post" action="/events/new/create">
             <label for="name">Name</label>
             <input class="form-control" type="text" name="name">
@@ -24,9 +31,21 @@
             <input class="form-control" type="text" name="details">
             <label for="options">options</label>
             <input class="form-control" type="text" name="options">
+<<<<<<< Updated upstream
             <label for="plus_one">plus_one</label>
             <input class="form-control" type="text" name="plus_one">
+=======
+            <label for="guests">Maximum Number of Allowed Guests</label>
+            <input class="form-control" type="text" name="guests">
+            <label for="public">Private (Type "0") or Public Event (Type "1")</label>
+            <input class="form-control" type="text" name="public">
+            <div class="create-cancel-edit">
+>>>>>>> Stashed changes
             <button class="btn btn-primary">Submit</button>
+            <form action="/dashboard">
+                    <button class="btn btn-danger" type="submit">Cancel</button>
+            </form>
+            </div>
         </form>
     </div>
 </body>

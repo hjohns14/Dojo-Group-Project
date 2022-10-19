@@ -8,7 +8,12 @@
     <title>Document</title>
 </head>
 <body>
+<<<<<<< Updated upstream
     {% for data in this_event %}
+=======
+    <div class="edit-form">
+        <h1>Edit</h1>
+>>>>>>> Stashed changes
         <form method="post" action="/events/update/{{data.id}}">
             <label for="name">Name</label>
             <input class="form-control" value={{data.name}} type="text" name="name">
@@ -34,7 +39,14 @@
             <label for="plus_one">plus_one</label>
             <input class="form-control" value={{data.plus_one}} type="text" name="plus_one">
             
+<<<<<<< Updated upstream
             <button type="submit" class="btn btn-primary">Submit</button>
+=======
+            <div class="create-cancel-edit">
+                <button type="submit" class="btn btn-primary">Update</button>
+            <button class="btn btn-danger" type="submit">Cancel</button>
+            </div>
+>>>>>>> Stashed changes
         </form>
     {% endfor %}
 
