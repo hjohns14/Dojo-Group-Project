@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Create Event</title>
+</head>
+<body>
+    <div class="edit-form">
+        <form method="post" action="/events/new/create">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" name="name">
+            <label for="date">Date</label>
+            <input class="form-control" type="date" name="date">
+            <label for="time_start">Start Time</label>
+            <input class="form-control" type="time" name="time_start">
+            <label for="time_end">End Time</label>
+            <input class="form-control" type="time" name="time_end">
+            <label for="address">Address</label>
+            <input class="form-control" type="text" name="address">
+            <label for="details">Description</label>
+            <input class="form-control" type="text" name="details">
+            <label for="options">Attire and Refreshments</label>
+            <input class="form-control" type="text" name="options">
+            <label for="guests">Maximum Number of Allowed Guests</label>
+            <input class="form-control" type="text" name="guests">
+            <label for="public">Private (Type "0") or Public Event (Type "1")</label>
+            <input class="form-control" type="text" name="public">
+            <button class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

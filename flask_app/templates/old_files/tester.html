@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<body>
+    <h1>Test form for user and event creation (Controllers)</h1>
+    <div class="d-flex justify-content-around">
+        <div>
+            <form action="/user/new/create" method="POST">
+                <label for="first_name">First Name</label>
+                <input class="form-control" type="text" name="first_name">
+                <label for="last_name">Last Name</label>
+                <input class="form-control" type="text" name="last_name">
+                <label for="email">Email</label>
+                <input class="form-control" type="text" name="email">
+                <label for="password">Password</label>
+                <input class="form-control" type="text" name="password">
+                <label for="confirm_password">Confirm password</label>
+                <input class="form-control" type="text" name="confirm_password">
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div>
+            <form method="post" action="/events/new/create">
+                <label for="name">Name</label>
+                <input class="form-control" type="text" name="name">
+                <label for="date">Date</label>
+                <input class="form-control" type="date" name="date">
+                <label for="time_start">time_start</label>
+                <input class="form-control" type="time" name="time_start">
+                <label for="time_end">time_end</label>
+                <input class="form-control" type="time" name="time_end">
+                <label for="address">address</label>
+                <input class="form-control" type="text" name="address">
+                <label for="details">details</label>
+                <input class="form-control" type="text" name="details">
+                <label for="options">options</label>
+                <input class="form-control" type="text" name="options">
+                <label for="plus_one">plus_one</label>
+                <input class="form-control" type="text" name="plus_one">
+                <label for="user_id">user_id(testing purposes only)</label>
+                <input class="form-control" type="number" name="user_id">
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <h1>Database display</h1>
+        <div>
+            <h3>Users</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>first_name</th>
+                        <th>last_name</th>
+                        <th>email</th>
+                        <th>password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in user_array %}
+                        <tr>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.password}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Events</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>date</th>
+                        <th>start time</th>
+                        <th>end time</th>
+                        <th>address</th>
+                        <th>details</th>
+                        <th>options</th>
+                        <th>plus_one</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events_array %}
+                        <tr>
+                            <td>{{event.name}}</td>
+                            <td>{{event.date.strftime("%m/%d/%y")}}</td>
+                            
+                            <!-- This ishow you format the time -->
+                            <td>{{event.time_start.strftime("%I:%M %p")}}</td>
+                            <td>{{event.time_end.strftime("%I:%M %p")}}</td>
+
+                            <td>{{event.address}}</td>
+                            <td>{{event.details}}</td>
+                            <td>{{event.options}}</td>
+                            <td>{{event.plus_one}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
