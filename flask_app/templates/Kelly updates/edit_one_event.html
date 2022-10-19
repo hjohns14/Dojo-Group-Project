@@ -5,10 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Edit Event</title>
 </head>
 <body>
-    {% for data in this_event %}
+    <div class="edit-form">
+        <h1>Edit</h1>
         <form method="post" action="/events/update/{{data.id}}">
             <label for="name">Name</label>
             <input class="form-control" value={{data.name}} type="text" name="name">
@@ -16,27 +19,33 @@
             <label for="date">Date</label>
             <input class="form-control" value={{data.date}} type="date" name="date">
 
-            <label for="time_start">time_start</label>
+            <label for="time_start">Start Time</label>
             <input class="form-control" value={{data.time_start}} type="time" name="time_start">
 
-            <label for="time_end">time_end</label>
+            <label for="time_end">End Time</label>
             <input class="form-control" value={{data.time_end}} type="time" name="time_end">
 
-            <label for="address">address</label>
+            <label for="address">Address</label>
             <input class="form-control" value={{data.address}} type="text" name="address">
 
-            <label for="details">details</label>
+            <label for="details">Description</label>
             <input class="form-control" value={{data.details}} type="text" name="details">
 
-            <label for="options">options</label>
+            <label for="options">Attire and Refreshments</label>
             <input class="form-control" value={{data.options}} type="text" name="options">
 
-            <label for="plus_one">plus_one</label>
-            <input class="form-control" value={{data.plus_one}} type="text" name="plus_one">
+            <label for="guests">Maximum Number of Allowed Guests</label>
+            <input class="form-control" value={{data.guests}} type="text" name="guests">
             
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <label for="public">Private (Type "0") or Public Event (Type "1")</label>
+            <input class="form-control" value={{data.public}} type="text" name="public">
+            
+            <div class="create-cancel-edit">
+                <button type="submit" class="btn btn-primary">Update</button>
+            <button class="btn btn-danger" type="submit">Cancel</button>
+            </div>
         </form>
-    {% endfor %}
+    </div>
 
 </body>
 </html>

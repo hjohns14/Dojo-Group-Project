@@ -16,7 +16,6 @@ GMAIL_CODE= os.getenv("gmail_code")
 def create_event():
     if "user_id" not in session:
         return redirect("/")
-    
     #update new db structure
     #get rid of this and just pass silent id form
     data = {
