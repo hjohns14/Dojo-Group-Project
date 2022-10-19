@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, session, flash, url_for
 from flask_app import app
-from flask_app.models import user, event
+from flask_app.models import user, event, maps
 import os, smtplib, hashlib
 from dotenv import load_dotenv
 from email.message import EmailMessage
@@ -273,8 +273,10 @@ def view_one(id):
     if "token" in session:
         token = True
         token_entry = user.User.get_non_user_invitee_by_token({"token" : session["token"][1]})
+    
+    location = maps.getmapembed(one_event.address)
 
-    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, token=token, token_entry=token_entry)
+    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, token=token, token_entry=token_entry, location=location)
 
 # # view one
 # @app.route("/events/view/<int:id>")
