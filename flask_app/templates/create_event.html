@@ -10,6 +10,9 @@
     <title>Create Event</title>
 </head>
 <body>
+    <div class="create-edit-title">
+        <h1>Create Event</h1>
+    </div>
     <div class="edit-form">
         <form method="post" action="/events/new/create">
             <label for="name">Name</label>
@@ -30,7 +33,12 @@
             <input class="form-control" type="text" name="guests">
             <label for="public">Private (Type "0") or Public Event (Type "1")</label>
             <input class="form-control" type="text" name="public">
+            <div class="create-cancel-edit">
             <button class="btn btn-primary">Submit</button>
+            <form action="/dashboard">
+                    <button class="btn btn-danger" type="submit">Cancel</button>
+            </form>
+            </div>
         </form>
     </div>
 </body>

@@ -29,18 +29,21 @@ body {
 .buttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding-bottom: 50px;
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.create-button, .logout-button, .events-button{
+.logout-button, .events-button{
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
+.create-button{
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 
+}
 
 .cards {
     display: flex;
@@ -64,8 +67,50 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+    padding-bottom: 40px;
 }
 
+.create-edit-title {
+    display: flex;
+    justify-content: center;
+}
+
+.create-cancel-edit {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.container-event {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
+
+.view-form {
+    display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.name-box {
+    padding-bottom: 25px;
+    padding-top: 25px; 
+}
+
+.attend-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.success {
+    display:flex;
+    justify-content: center;
+}
 /* Maybe with these colors
 .bot-card {
     background-color: rgb(72, 189, 212);

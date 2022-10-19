@@ -24,8 +24,8 @@
 </div>
     
     <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
-    <div>
-
+    <div class="container-event">
+        <div class="my-event-box">
         <h3>My Event Invites</h3>
         <table class="table">
             <thead>
@@ -40,6 +40,7 @@
                     <!-- <th>plus_one</th> -->
                 </tr>
             </thead>
+            </div>
             <tbody>
                 {% for event in invited_events %}
                     <tr>
@@ -59,7 +60,9 @@
                 {% endfor %}
             </tbody>
         </table>
-
+    <!--BORDERS
+        <div class="border border-dark">
+        -->
         <h3>My Events</h3>
         <table class="table">
             <thead>
@@ -95,9 +98,12 @@
                 {% endfor %}
             </tbody>
         </table>
+       <!-- </div> -->
 
-
-        <h3>Public Events</h3>
+    <!-- BORDERS
+        <div class="border border-dark"> -->
+        
+            <h3>Public Events</h3>
         <table class="table">
             <thead>
                 <tr>
@@ -129,6 +135,7 @@
                 {% endfor %}
             </tbody>
         </table>
+       <!-- </div>-->
 
     </div>
 </body>

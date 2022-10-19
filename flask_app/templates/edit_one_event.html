@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="edit-form">
+        <h1>Edit</h1>
         <form method="post" action="/events/update/{{data.id}}">
             <label for="name">Name</label>
             <input class="form-control" value={{data.name}} type="text" name="name">
@@ -39,7 +40,10 @@
             <label for="public">Private (Type "0") or Public Event (Type "1")</label>
             <input class="form-control" value={{data.public}} type="text" name="public">
             
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="create-cancel-edit">
+                <button type="submit" class="btn btn-primary">Update</button>
+            <button class="btn btn-danger" type="submit">Cancel</button>
+            </div>
         </form>
     </div>
 

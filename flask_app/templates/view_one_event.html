@@ -26,8 +26,9 @@
     </div>
     {% endif %}
     <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
-    <div>
-        <h3>{{ one_event.name }}</h3>
+    <div class="view-form">
+        <h1>{{ one_event.name }}</h1>
+        <div>
         <table class="table">
             <thead>
                 <tr>
@@ -82,11 +83,17 @@
     {% if the_creator %}
         <div class="bot-invite">
             <form action="/events/view/{{ one_event.id }}/invite" method="post">
-                <h2>Invite someone to the event!</h2>
-                <label for="name">Name</label>
-                <input type="text" name="name">
-                <label for="email">Email</label>
-                <input type="text" name="email">
+                <div class="invite">
+                    <h2>Invite someone to the event!</h2>
+                </div>
+                <div class="name-box">
+                    <label for="name">Name</label>
+                    <input type="text" name="name">
+                </div>
+                <div class="email-box">
+                    <label for="email">Email</label>
+                    <input type="text" name="email">
+                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -96,14 +103,14 @@
             <p>Want to keep track of your events and have the option to change your RSVP?</p>
             <a href="/">Sign Up</a>
         </div>
-        <div>
+        <div class="attend-box">
             <h2>Attend</h2>
             <form action="">
                 <!-- This form should have items for name, email, additional guests, and attending status to add a random person's entry into non_user_inviteees.  To be finished by someone? -->
             </form>
         </div>
     {% elif (not logged_in) and (token) %}
-        <div>
+        <div class="attend-box">
             <h2>Attend</h2>
             <form method="post" action="">
                 <label for="name">Name</label>
@@ -123,11 +130,13 @@
         </div>
     {% elif logged_in %}
         <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
-        <div>
+        <div class="attend-box">
             <h2>Attend</h2>
             <form action="" method="post">
+                <div>
                 <label for="guest_number">Additional Guests</label>
                 <input type="text" name="guest_number">
+                </div>
                 <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
                 <input class="form-control" type="text" name="attending">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -135,6 +144,6 @@
             </form>
         </div>
     {% endif %}
-
+</div>
 </body>
 </html>
