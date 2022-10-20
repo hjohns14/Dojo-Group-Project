@@ -30,11 +30,14 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    margin-right: 50px;
     padding-bottom: 50px;
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
+    gap: 30px;
 }
+
 
 .logout-button, .events-button{
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
@@ -93,6 +96,10 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.view-block{
+
 }
 
 .name-box {
