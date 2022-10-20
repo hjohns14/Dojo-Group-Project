@@ -157,7 +157,8 @@
         </div>
         <div class="attend-box">
             <h2>Attend</h2>
-            <form method="post" action="">
+            <p>Remember not to share your personal link!</p>
+            <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
                 <label for="name">Name</label>
                 <input class="form-control" value={{ token_entry["name"] }} type="text" name="name">
                 <label for="email">Email (can't change)</label>

@@ -216,6 +216,9 @@ def token_user_register(id):
     session["user_id"] = user_id
     return redirect("/")
 
+@app.route("/events/view/<int:id>/token/attend", methods=["POST"])
+def token_attend(id):
+    pass
 
 #not sure what 4 following lines with code are doing - can we delete them?
 
