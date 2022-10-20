@@ -59,7 +59,8 @@
     <div class="view-form">
     {% if the_creator %}
         <div class="bot-invite">
-
+            <h2>Invite someone to the event!</h2>
+            <form action="/events/view/{{ one_event.id }}/invite" method="post">
             {% with messages = get_flashed_messages(with_categories=true) %}     
                 {% if messages %}                            
                     {% for category, message in messages %}            
@@ -67,20 +68,13 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-
-            <form action="/events/view/{{ one_event.id }}/invite" method="post">
-                <div class="invite">
-                    <h2>Invite someone to the event!</h2>
-                </div>
-                <div class="name-box">
                     <label for="name">Name</label>
-                    <input type="text" name="name">
-                </div>
-                <div class="email-box">
+                    <input class="form-control" type="text" name="name">
                     <label for="email">Email</label>
-                    <input type="text" name="email">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                    <input class="form-control" type="text" name="email">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
             </form>
         </div>
     {% elif (not logged_in) and (not token) %}

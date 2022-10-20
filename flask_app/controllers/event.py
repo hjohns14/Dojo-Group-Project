@@ -4,6 +4,9 @@ from flask_app.models import user, event, maps
 import os, smtplib, hashlib
 from dotenv import load_dotenv
 from email.message import EmailMessage
+import re
+
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 load_dotenv()
 # need to install dotenv while shell is open
@@ -110,6 +113,10 @@ def attend_event_email(id):
 
     if len(request.form['name'])<2 or len(request.form['email'])<5:
         flash("Must have a name and email to invite someone")
+        return redirect(request.referrer)
+
+    if not EMAIL_REGEX.match(request.form["email"].strip()):
+        flash("Invalid Email")
         return redirect(request.referrer)
 
     
@@ -262,7 +269,7 @@ def token_attend(id):
 
 @app.route("/events/view/<int:id>/logged-in/attend", methods=["POST"])
 def logged_in_attend(id):
-    one_event=event.Event.get_event_by_id2({"id" : id})
+    one_event=event.Event.get_event_by_id({"id" : id})
 
     data = {
     "user_id" : session["user_id"],

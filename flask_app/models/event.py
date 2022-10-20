@@ -75,14 +75,6 @@ class Event():
             event_obj.users_invites.append(record_list)
         return event_obj
 
-    @classmethod
-    def get_event_by_id2(cls, data):
-        query ="""SELECT * FROM events WHERE id=%(id)s"""
-        result = connectToMySQL(cls.db_name).query_db(query, data)
-        if len(result) == 0:
-            return False
-        event_obj = cls(result[0])
-        return event_obj
 
     @classmethod
     def update(cls, data):
@@ -107,7 +99,7 @@ class Event():
             is_valid=False
             flash("Email must be at least 5 characters.")
         if not EMAIL_REGEX.match(data["email"].strip()):
-            flash('Invalid Email', 'register')
+            flash('Invalid Email')
             is_valid = False
         if len(data['guest_number'].strip()) < 1:
             is_valid=False
