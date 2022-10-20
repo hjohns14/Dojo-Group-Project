@@ -1,5 +1,4 @@
-from pdb import post_mortem
-from flask import render_template, request, redirect, session, flash, url_for
+from flask import render_template, request, redirect, session, flash, request
 from flask_app import app
 from flask_app.models import user, event, maps
 import os, smtplib, hashlib
@@ -107,12 +106,25 @@ def attend_event_email(id):
     }
     this_event=event.Event.get_event_by_id(event_id)
 
+    print(len(request.form['name']))
+
+    if len(request.form['name'])<2 or len(request.form['email'])<5:
+        flash("Must have a name and email to invite someone")
+        return redirect(request.referrer)
+
+    
     #separate email message if the email is registered with a user
     invited_user = user.User.get_user_by_email(request.form)
     if invited_user:
         event_link="http://localhost:5000/dashboard"
 
-        # is there a way to add a text body to specify the user can view this and RSVP by logging into the dashboard?
+        data = {
+            "user_id" : invited_user.id,
+            "event_id" : this_event.id,
+            "guest_number" : "0",
+            "attending" : "3"
+        }
+
         rsvp_email= "rsvptester16@gmail.com"
         msg = EmailMessage()
         msg.set_content(event_link)
@@ -125,12 +137,7 @@ def attend_event_email(id):
         server.login(rsvp_email, GMAIL_CODE)
         server.send_message(msg)
 
-        data = {
-            "user_id" : invited_user.id,
-            "event_id" : this_event.id,
-            "guest_number" : "NULL",
-            "attending" : "3"
-        }
+
         user.User.link_users_invitees(data)
 
         return redirect("/success")
@@ -141,12 +148,12 @@ def attend_event_email(id):
             "name" : request.form["name"],
             "email" : request.form["email"],
             "attending" : "3",
-            "guest_number" : "NULL",
+            "guest_number" : "0",
             "token" : "NULL",
             "event_id" : id
         }
         if user.User.get_non_user_by_email(data):
-            flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
+            flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.")
             return redirect("/events/view/"+str(id))
         non_user_id = user.User.non_user_save(data)
         #generate token
@@ -191,6 +198,10 @@ def attend_event_nUnT(id):
     "token" : "NULL",
     "event_id" : id
     }
+    if data["attending"] > one_event.guests:
+        flash("Your number of guests must be less than the maximum number of guests allowed.")
+        return redirect(request.referrer)
+
     user.User.non_user_save(data)
     return redirect("/success/2")
 

@@ -50,7 +50,7 @@ class User:
         results = connectToMySQL(cls.db_name).query_db(query, data)
         if len(results) == 0:
             return False
-        return cls(results[0])
+        return results[0]
 
     @classmethod
     def link_users_invitees(cls, data):
@@ -199,7 +199,7 @@ class User:
 
     @staticmethod
     def verify_non_user_email(data):
-        #data is a dictioinary from a form.  verify that the keys for "email" and "token" are both a part of the same exact entry in non_user_invitees table
+        #data is a dictionary from a form.  verify that the keys for "email" and "token" are both a part of the same exact entry in non_user_invitees table
         #flash that email and token need to be same record
         return True
 

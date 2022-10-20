@@ -1,4 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask import flash
 from flask_app.models import user
 
 class Event():
@@ -86,13 +87,18 @@ class Event():
     @staticmethod
     def verify_nUnT_invite(data):
         #gets dictionary with name, email, guest_number, and attending keys
-        #verify all entries have something
-        #verify attending is either 1 or 2
-        #verify email is not present in users nor non_user_invitees - User.verify_non_user_email(data):
-        #check guest_number is not larger than allowed
-        return True
+        if len(data['name']) < 2:
+            flash("Name must be at least 2 characters.")
+        if len(data['email']) < 2:
+            flash("Email must be at least 2 characters.")
+        if len(data['guest_number']) < 1:
+            flash("Must specify number of guests you are bringing including yourself.")
+        if len(data['attending']) < 1:
+            flash("Please select if you are attending or not.")
         if user.User.get_non_user_by_email():
-            flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
+            flash("Sorry, this user has already been invited to your event. Ask them to check their emails, including the junk box.")
+        #verify email is not present in users nor non_user_invitees - User.verify_non_user_email(data):
+        return True
 
     @staticmethod
     def verify_T_invite(data):

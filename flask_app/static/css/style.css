@@ -1,5 +1,6 @@
 body {
     background-color:#8fc4b7;
+    height: 125vh;
 }
 
 .sign-up {
@@ -128,5 +129,10 @@ body {
 }
 */
 
+
+
+.error {
+    color: red;
+}
 
 

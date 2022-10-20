@@ -59,7 +59,13 @@
     <div class="view-form">
     {% if the_creator %}
         <div class="bot-invite">
-            <p>ADD FLASH HUUURRRRRR the bin group is "invite"</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}     
+                {% if messages %}                            
+                    {% for category, message in messages %}            
+                    <p class="error">{{message}}</p>                   
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <form action="/events/view/{{ one_event.id }}/invite" method="post">
                 <div class="invite">
                     <h2>Invite someone to the event!</h2>
@@ -76,11 +82,6 @@
             </form>
         </div>
     {% elif (not logged_in) and (not token) %}
-        <div>
-            <h2>Register</h2>
-            <p>Want to keep track of your events and have the option to change your RSVP?</p>
-            <a href="/">Sign Up</a>
-        </div>
         <div class="attend-box">
             <form action="/events/view/{{ one_event.id }}/nUnT/attend" method="post">
                 <div class="invite">
@@ -105,7 +106,27 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
+        <div class="text-center">
+            <h2>Register</h2>
+            <p>Want to keep track of your events and have the option to change your RSVP?</p>
+            <a href="/">Sign Up</a>
+        </div>
     {% elif (not logged_in) and (token) %}
+        <div class="attend-box">
+            <h2>Attend</h2>
+            <p>Remember not to share your personal link!</p>
+            <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
+                <label for="name">Name</label>
+                <input class="form-control" value="{{ token_entry["name"] }}" type="text" name="name">
+                <label for="email">Email (can't change)</label>
+                <input class="form-control" value="{{ token_entry["email"] }}" type="email" name="email">
+                <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
+                <input class="form-control" value="{{ token_entry["attending"] }}" type="text" name="attending">
+                <label for="guest_number">Guest Number</label>
+                <input class="form-control" value="{{ token_entry["guest_number"] }}" type="text" name="guest_number">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
         <div>
             <h2>Register</h2>
             <p>Want to keep track of your events?  After you create a profile, you can RSVP to this event and see other events around you!</p>
@@ -132,21 +153,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg mb-1">Sign Up</button>
                 </form>
-        </div>
-        <div class="attend-box">
-            <h2>Attend</h2>
-            <p>Remember not to share your personal link!</p>
-            <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
-                <label for="name">Name</label>
-                <input class="form-control" value="{{ token_entry["name"] }}" type="text" name="name">
-                <label for="email">Email (can't change)</label>
-                <input class="form-control" value="{{ token_entry["email"] }}" type="date" name="email">
-                <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                <input class="form-control" value="{{ token_entry["attending"] }}" type="text" name="attending">
-                <label for="guest_number">Guest Number</label>
-                <input class="form-control" value="{{ token_entry["guest_number"] }}" type="text" name="guest_number">
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>
         </div>
     {% elif logged_in %}
         <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
