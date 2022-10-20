@@ -199,6 +199,9 @@ def attend_event_nUnT(id):
     if not event.Event.verify_nUnT_invite(data):
         return redirect(request.referrer)
 
+    if data["guest_number"] == "":
+        data["guest_number"] = 0
+
     if int(data["guest_number"]) > int(one_event.guests):
         flash("Your number of guests must be less than the maximum number of guests allowed.")
         return redirect(request.referrer)
@@ -247,6 +250,9 @@ def token_attend(id):
     if not user.User.verify_non_user_email(data):
         return redirect(request.referrer)
     
+    if data["guest_number"] == "":
+        data["guest_number"] = 0
+
     if int(data["guest_number"]) > int(one_event.guests):
         flash("Your number of guests must be less than the maximum number of guests allowed.")
         return redirect(request.referrer)
@@ -264,6 +270,9 @@ def logged_in_attend(id):
     "attending" : request.form["attending"],
     "guest_number" : request.form["guest_number"],
     }
+
+    if data["guest_number"] == "":
+        data["guest_number"] = 0
 
     if int(data["guest_number"]) > int(one_event.guests):
         print(one_event.guests,"guest")
