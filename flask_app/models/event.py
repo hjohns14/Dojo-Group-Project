@@ -94,6 +94,14 @@ class Event():
         if user.User.get_non_user_by_email():
             flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
 
+    @staticmethod
+    def verify_T_invite(data):
+        #gets dictionary with name, email, guest_number, and attending keys
+        #verify all entries have something
+        #verify attending is either 1 or 2
+        #check guest_number is not larger than allowed
+        return True
+
 
     @staticmethod
     def validate_event(data):

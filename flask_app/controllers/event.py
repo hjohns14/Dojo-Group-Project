@@ -218,7 +218,42 @@ def token_user_register(id):
 
 @app.route("/events/view/<int:id>/token/attend", methods=["POST"])
 def token_attend(id):
-    pass
+    #make any protected routes for logged_in or tokens?
+    if not event.Event.verify_T_invite(request.form):
+        return redirect("/events/view/<int:id>")
+
+    data = {
+    "name" : request.form["name"],
+    "email" : request.form["email"],
+    "attending" : request.form["attending"],
+    "guest_number" : request.form["guest_number"],
+    "token" : session["token"][1],
+    "event_id" : id
+    }
+    if not user.User.verify_non_user_email(data):
+        return redirect("/events/view/<int:id>")
+
+    user.User.non_user_update(data)
+    return redirect("/success/3")
+
+@app.route("/events/view/<int:id>/logged-in/attend", methods=["POST"])
+def logged_in_attend(id):
+    #make any protected routes for logged_in
+
+    data = {
+    "user_id" : session["user_id"],
+    "event_id" : id,
+    "attending" : request.form["attending"],
+    "guest_number" : request.form["guest_number"],
+    }
+
+    temp = user.User.get_user_invitee({"user_id" : session["user_id"], "event_id" : id})
+    if temp:
+        user.User.user_invitee_update(data)
+    else :
+        user.User.link_users_invitees(data)
+    
+    return redirect("/success/3")
 
 #not sure what 4 following lines with code are doing - can we delete them?
 
@@ -314,13 +349,21 @@ def view_one(id):
     token_entry = ""
     if "user_id" in session:
         logged_in = True
+        temp = user.User.get_user_invitee({"user_id" : session["user_id"], "event_id" : id})
+        if temp:
+            logged_in_entry = temp
+        else :
+            logged_in_entry = {
+                "attending" : 0,
+                "guest_number" : 0
+            }
     if "token" in session:
         token = True
         token_entry = user.User.get_non_user_invitee_by_token({"token" : session["token"][1]})
     
     location = maps.getmapembed(one_event.address)
 
-    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, token=token, token_entry=token_entry, location=location)
+    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
 
 # # view one
 # @app.route("/events/view/<int:id>")
@@ -352,3 +395,7 @@ def success():
 @app.route("/success/2")
 def success_2():
     return render_template("success_2.html")
+
+@app.route("/success/3")
+def success_3():
+    return render_template("success_3.html")

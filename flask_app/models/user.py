@@ -66,6 +66,14 @@ class User:
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
+    def non_user_update(cls, data):
+        query = """UPDATE non_user_invitees SET name=%(name)s, attending=%(attending)s,
+                    guest_number=%(guest_number)s
+                    WHERE token=%(token)s"""
+        return connectToMySQL(cls.db_name).query_db(query, data)
+
+
+    @classmethod
     def update_token(cls, data):
         query = "UPDATE non_user_invitees SET token = %(token)s WHERE id = %(id)s;"
         print("Updating ", data["id"])
@@ -80,9 +88,24 @@ class User:
         return results[0]
     
     @classmethod
+    def get_user_invitee(cls, data):
+        query = "SELECT * FROM user_invitees WHERE user_id=%(user_id)s AND event_id=%(event_id)s"
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        if len(results) == 0:
+            return False
+        return results[0]
+    
+    @classmethod
+    def user_invitee_update(cls, data):
+        query = """UPDATE user_invitees SET attending=%(attending)s,
+                    guest_number=%(guest_number)s
+                    WHERE user_id=%(user_id)s AND event_id=%(event_id)s"""
+        return connectToMySQL(cls.db_name).query_db(query, data)
+
+    @classmethod
     def swip_swap_kapop(cls, data):
         query = """DELETE FROM non_user_invitees WHERE token=%(token)s"""
-        result = connectToMySQL(cls.db_name).query_db(query, data)
+        connectToMySQL(cls.db_name).query_db(query, data)
         query = """INSERT INTO users (first_name, last_name, email, password)
             VALUES(%(first_name)s, %(last_name)s, %(email)s, %(password)s)"""
         user_id = connectToMySQL(cls.db_name).query_db(query, data)
@@ -176,6 +199,7 @@ class User:
     @staticmethod
     def verify_non_user_email(data):
         #data is a dictioinary from a form.  verify that the keys for "email" and "token" are both a part of the same exact entry in non_user_invitees table
+        #flash that email and token need to be same record
         return True
 
 

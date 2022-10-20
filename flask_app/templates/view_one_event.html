@@ -55,7 +55,15 @@
         allowfullscreen>
         </iframe>
     </div>
-    <div class="view-form">        
+    <div class="view-form">
+    <iframe
+        width="450"
+        height="250"
+        frameborder="0" style="border:0"
+        referrerpolicy="no-referrer-when-downgrade"
+        src= {{location}}
+        allowfullscreen>
+    </iframe>
     <!-- The div below is supposed to be a display table that will show all the attending registered users, To Be Finished At Some Point -->
     <!-- <div>
         <h3>See Registered Users Who are Going!</h3>
@@ -173,14 +181,14 @@
     {% elif logged_in %}
         <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
         <div class="attend-box">
-            <h2>Attend</h2>
-            <form action="" method="post">
+            <h2>Attend or Update RSVP</h2>
+            <form action="/events/view/{{ one_event.id }}/logged-in/attend" method="post">
                 <div>
-                <label for="guest_number">Additional Guests</label>
-                <input type="text" name="guest_number">
-                </div>
                 <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                <input class="form-control" type="text" name="attending">
+                <input class="form-control" type="text" value="{{ logged_in_entry["attending"] }}" name="attending">
+                <label for="guest_number">Additional Guests</label>
+                <input type="text" value="{{ logged_in_entry["guest_number"] }}" name="guest_number">
+                </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <!-- hidden input with session["user_id"] -->
             </form>
