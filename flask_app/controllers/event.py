@@ -33,6 +33,7 @@ def create_event():
         "public" : request.form["public"],
         "user_id": session["user_id"]
     }
+    print(data["time_end"])
 
     #need validation to block user from adding a connection to his own email into the many-to-many table
 
@@ -254,8 +255,6 @@ def token_attend(id):
     if not event.Event.verify_T_invite(data):
         return redirect(request.referrer)
 
-    if not user.User.verify_non_user_email(data):
-        return redirect(request.referrer)
     
     if data["guest_number"] == "":
         data["guest_number"] = 0

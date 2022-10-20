@@ -140,44 +140,33 @@ class Event():
 
     @staticmethod
     def validate_event(data):
-        #provide code to validate all aspects of an event
-        #maybe options can be blank or add NULL if none?
-        #veryify that the address is valid and googlemaps will work with it, otherwise will not show up a link
-        return True
-        
+        def contains_number(string):
+            return any(char.isdigit() for char in string)
         isValid = True
-        # Validations (we can decide what we want to validate later on and add here)
-        if len(data['name'] < 2):
+        if len(data['name']) < 2:
+            flash("Event name must be at least 2 characters.")
+            isValid = False
+        if len(data['date']) < 2:
+            flash("Please input a date")
+            isValid = False
+        if len(data['time_start']) < 2:
+            flash("Please input a start time")
+            isValid = False
+        if len(data['time_end']) < 2:
+            flash("Please input a end time")
+            isValid = False
+        if len(data['address']) < 5:
+            flash("Address must be at least 5 characters.")
+            isValid = False
+        if not contains_number(data['address']):
+            flash("Address must have numbers.")
+        if len(data['details']) < 2:
+            flash("Details must be at least 2 characters.")
+            isValid = False
+        if len(data['guests']) < 1:
+            flash("Please input a number of allowed guests.")
+            isValid = False
+        if len(data['public']) < 1:
+            flash("Please choose if the event is public or private.")
             isValid = False
         return isValid
-
-
-
-
-
-
-
-    @classmethod
-    def get_event_by_id_for_one_user(cls, data):
-        query ="""SELECT * FROM events JOIN users on users.id = events.user_id WHERE events.id=%(id)s"""
-
-        result = connectToMySQL(cls.db_name).query_db(query, data)
-
-        if len(result) == 0:
-            return False
-        else:
-            print(result,"result")
-            event = cls(result[0])
-            user_data = {
-                "id":result[0]['users.id'],
-                "first_name":result[0]['first_name'],
-                "last_name":result[0]['last_name'],
-                "email":result[0]['email'],
-                "password":result[0]['password'],
-                "created_at":result[0]['users.created_at'],
-                "updated_at":result[0]['users.updated_at']
-            }
-            event_maker = user.User(user_data)
-            event.creator = event_maker
-            print(event)
-            return event

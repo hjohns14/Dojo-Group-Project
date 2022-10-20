@@ -36,15 +36,20 @@ def index():
 # create user
 @app.route("/user/new/create", methods=["POST"])
 def register():
-    #validate_user checks for password matching and the use of an existing email
-    if not user.User.validate_user(request.form):
-        return redirect("/")
+
     data = {
         "first_name": request.form["first_name"],
         "last_name": request.form["last_name"],
         "email": request.form["email"],
         "password": request.form["password"],
     }
+
+    if not user.User.validate_user(request.form):
+        return redirect("/")
+    if user.User.get_user_by_email(data['email']):
+        flash("Email already in system", "register")
+    print(data['email'])
+
     hash_pass = bcrypt.generate_password_hash(request.form["password"])
     data["password"] = hash_pass
     session["user_id"] = user.User.save(data)

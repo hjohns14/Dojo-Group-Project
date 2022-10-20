@@ -15,6 +15,13 @@
     </div>
     <div class="edit-form">
         <form method="post" action="/events/new/create">
+            {% with messages = get_flashed_messages(with_categories=true) %}     
+                {% if messages %}                            
+                    {% for category, message in messages %}            
+                    <p class="error text-center">{{message}}</p>                   
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <label for="name">Name</label>
             <input class="form-control" type="text" name="name">
             <label for="date">Date</label>
@@ -32,7 +39,17 @@
             <label for="guests">Maximum Number of Allowed Guests</label>
             <input class="form-control" type="text" name="guests">
             <label for="public">Private (Type "0") or Public Event (Type "1")</label>
-            <input class="form-control" type="text" name="public">
+            <select class="form-control" name="public" id="public">
+                <option value="">
+                    Choose event publicity
+                </option>
+                <option value="0">
+                    Private
+                </option>
+                <option value="1">
+                    Public
+                </option>
+            </select>
             <div class="create-cancel-edit">
             <button class="btn btn-primary">Submit</button>
             <form action="/dashboard">

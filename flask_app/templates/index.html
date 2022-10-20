@@ -25,6 +25,13 @@
                     </div>
                     <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sign Up</h3>
                     <form action="/user/new/create" method="POST">
+                        {% with messages = get_flashed_messages(category_filter=['register']) %}     
+                            {% if messages %}                            
+                                {% for message in messages %}            
+                                <p class="error">{{message}}</p>                   
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
                     <div class="form-outline mb-4">
                         <input type="text" name="first_name" class="form-control" />
                         <label class="form-label" for="first_name">First Name</label>
@@ -52,6 +59,13 @@
                 <div class="card-body p-4 p-md-5">
                     <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Sign In</h3>
                     <form action="/user/sign_in" method="POST">
+                        {% with messages = get_flashed_messages(category_filter=['sign_in']) %}     
+                            {% if messages %}                            
+                                {% for message in messages %}            
+                                <p>{{message}}</p>                   
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
                 <div class="form-outline mb-4">
                     <input type="text" name="email" class="form-control" />
                     <label class="form-label" for="email">Email</label>

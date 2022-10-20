@@ -38,9 +38,10 @@ class User:
     @classmethod
     def get_user_by_email(cls, data):
         # Successfull DB test
-        query = """SELECT * FROM users WHERE email=%(email)s"""
+        query = "SELECT * FROM users WHERE email=%(email)s"
         results = connectToMySQL(cls.db_name).query_db(query, data)
-        if len(results) == 0:
+        print(results)
+        if not results:
             return False
         return cls(results[0])
 
@@ -48,6 +49,7 @@ class User:
     def get_non_user_by_email(cls, data):
         query = """SELECT * FROM non_user_invitees WHERE email=%(email)s"""
         results = connectToMySQL(cls.db_name).query_db(query, data)
+        print(results)
         if len(results) == 0:
             return False
         return results[0]
@@ -126,66 +128,27 @@ class User:
     #Untested method
     @staticmethod
     def validate_user(user):
-        #should take user dictionary from registration form with keys for "first_name", "last_name", "email", and "password"
-        #verifies all fields are present and valid
         #checks email is not already in use
-        #checks password and "confirm_password" are the same
-        #returns T or F boolean
-        return True
-
         is_valid = True
-        pw_invalid = False
         if len(user['first_name']) < 2 or len(user['last_name']) < 2:
-            flash("* Field Required: Name", 'Register')
+            flash("Field Required: Name")
             is_valid = False
+
         if not EMAIL_REGEX.match(user['email']):
-            flash("* Invalid Email Format", 'Register')
-            is_valid = False            
+            flash("Invalid Email Format","register")
+            is_valid = False
+
         if len(user['email']) < 1: 
-            flash("* Field Required: Email", 'Register')
+            flash("Field Required: Email","register")
             is_valid = False
-        if not user['password']:
-            flash("* Field Required: Password", 'Register')
+
+        if len(user['password'])<8:
+            flash("Password must be at least 8 characters.","register")
+            is_valid = False
+
         if user['password'] != user['confirm_password']:
-            flash("* Passwords do not match!", "Register")
+            flash("Passwords do not match!","register")
             is_valid = False
-
-        #this should just be a simple method check to see if a record is returned with the specific email, no need for a "for loop"
-        all_users = User.get_all_users()
-        if all_users:
-            for db_user in all_users:
-                if user['email'] == db_user.email:
-                    flash("* Email has been taken", "Register")
-                    is_valid = False
-        
-        # creates a list of each character in the password like ['a', 'b', 'c']
-        pw = [letter for letter in user['password']]
-        
-        ## If any of these statement return false -> set password invalid true
-
-        # any() checks for any True --- ### --- any([False, False, True, False]) -> True
-        # checks if any character in the pw is a digit -> if so return True and move on
-        if not any(char.isdigit() for char in pw):
-            pw_invalid = True
-        # same but for upper case -> if no char is lower return false and pw_invalid = True
-        if not any(char.isupper() for char in pw):
-            pw_invalid = True
-        # same but for lower case
-        if not any(char.islower() for char in pw):
-            pw_invalid = True
-        # finally check length
-        if len(user['password']) < 6:
-            pw_invalid = True
-
-        ## If the password is invalid, the 
-        if pw_invalid:
-            flash("""* Password must contain one of each of the following
-                    \n- An uppercase letter
-                    \n- A lowercase letter
-                    \n- A number
-                    \n- Must be longer than 6 characters""", "Register")
-            is_valid = False
-
         return is_valid
 
     @staticmethod
@@ -206,40 +169,6 @@ class User:
         
         return True
 
-
-
-
-
-
-
-    @classmethod
-    def get_one_user_with_events(cls, data):
-        query = "SELECT * FROM users LEFT JOIN events ON users.id = events.user_id WHERE users.id = %(user_id)s"
-        results = connectToMySQL(cls.db_name).query_db(query, data)
-        if len(results) == 0:
-            return None
-        else:
-            user_instance = cls(results[0])
-            for this_event_dictionary in results:
-                if this_event_dictionary['events.id'] == None:
-                    break
-                new_event_dictionary = {
-                    "id": this_event_dictionary['events.id'],
-                    "user_id":this_event_dictionary['user_id'],
-                    "name": this_event_dictionary['name'],
-                    "date": this_event_dictionary['date'],
-                    "time_start": this_event_dictionary['time_start'],
-                    "time_end": this_event_dictionary['time_end'],
-                    "address": this_event_dictionary['address'],
-                    "details": this_event_dictionary['details'],
-                    "options": this_event_dictionary['options'],
-                    "plus_one": this_event_dictionary['plus_one'],
-                    "created_at": this_event_dictionary['events.created_at'],
-                    "updated_at": this_event_dictionary['events.updated_at']
-                }
-                this_event_object = event.Event(new_event_dictionary)
-                user_instance.events.append(this_event_object)
-            return user_instance
 
     # Get all users !!Unsafe (password)
     @classmethod

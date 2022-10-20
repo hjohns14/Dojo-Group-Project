@@ -126,8 +126,8 @@
             <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
                 <label for="name">Name</label>
                 <input class="form-control" value="{{ token_entry['name'] }}" type="text" name="name">
-                <label for="email">Email (can't change)</label>
-                <input class="form-control" value="{{ token_entry['email'] }}" type="email" name="email">
+                <label for="email">Email</label>
+                <input class="form-control" value="{{ token_entry['email'] }}" type="email" name="email" readonly>
                 <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
                 <input class="form-control" value="{{ token_entry['attending'] }}" type="text" name="attending">
                 <label for="guest_number">Guest Number</label>
