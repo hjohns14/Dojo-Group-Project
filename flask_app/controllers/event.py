@@ -245,6 +245,8 @@ def token_attend(id):
     "event_id" : id
     }
 
+    one_event=event.Event.get_event_by_id({"id" : id})
+
 
     if not event.Event.verify_T_invite(data):
         return redirect(request.referrer)
