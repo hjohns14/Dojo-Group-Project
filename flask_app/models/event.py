@@ -107,7 +107,7 @@ class Event():
     def validate_event(data):
         #provide code to validate all aspects of an event
         #maybe options can be blank or add NULL if none?
-        #geodata should be editer later by the API code
+        #veryify that the address is valid and googlemaps will work with it, otherwise will not show up a link
         return True
         
         isValid = True

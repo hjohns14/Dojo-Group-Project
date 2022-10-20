@@ -81,7 +81,7 @@ class User:
 
     @classmethod
     def get_non_user_invitee_by_token(cls, data):
-        query = """SELECT * FROM non_user_inivitees WHERE token=%(token)s"""
+        query = """SELECT * FROM non_user_invitees WHERE token=%(token)s"""
         results = connectToMySQL(cls.db_name).query_db(query, data)
         if len(results) == 0:
             return False
@@ -91,6 +91,7 @@ class User:
     def get_user_invitee(cls, data):
         query = "SELECT * FROM user_invitees WHERE user_id=%(user_id)s AND event_id=%(event_id)s"
         results = connectToMySQL(cls.db_name).query_db(query, data)
+        print(results)
         if len(results) == 0:
             return False
         return results[0]

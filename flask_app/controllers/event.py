@@ -93,6 +93,7 @@ def delete_event(id):
 @app.route("/events/view/<int:id>/invite", methods=["POST"])
 def attend_event_email(id):
     #checks a user is logged in and verifies his or her user_id matches the creator of the event
+    #must add a verify validation to ensure that the submitted email is correct and works with smtplib
     if (not (session.get("user_id", False))) or (not (session.get("user_id", False) == event.Event.get_event_by_id({"id" : id}).user_id)):
         session.clear()
         flash("Sorry this event must exist and you must be the owner of it to edit.", "sign_in")
@@ -144,7 +145,7 @@ def attend_event_email(id):
             "token" : "NULL",
             "event_id" : id
         }
-        if user.User.get_non_user_by_email():
+        if user.User.get_non_user_by_email(data):
             flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
             return redirect("/events/view/"+str(id))
         non_user_id = user.User.non_user_save(data)
@@ -279,6 +280,7 @@ def dashboard():
     # print(GMAIL_CODE)
     all_events=event.Event.get_all_events()
     my_events = []
+    my_attending_events = []
     invited_events = []
     public_events = []
     for single_event in all_events:
@@ -286,12 +288,16 @@ def dashboard():
             my_events.append(single_event)
             continue
         for invite in single_event.users_invites:
-            if (session["user_id"] == invite[0]) and (invite[3] == "3"):
+            if (session["user_id"] == invite[0]) and (invite[3] == 1):
+                my_attending_events.append(single_event)
+                continue
+        for invite in single_event.users_invites:
+            if (session["user_id"] == invite[0]) and (invite[3] == 3):
                 invited_events.append(single_event)
                 continue
         if single_event.public == 1:
             public_events.append(single_event)
-    return render_template("dashboard.html", my_events=my_events, invited_events=invited_events, public_events=public_events)
+    return render_template("dashboard.html", my_attending_events=my_attending_events, my_events=my_events, invited_events=invited_events, public_events=public_events)
 
 # create
 @app.route("/events/new/create_one")
@@ -332,7 +338,7 @@ def view_one(id):
     the_creator = False
     if session.get("user_id", False) == one_event.user_id:
         the_creator = True
-    if one_event.public == "0":
+    if one_event.public == 0:
         user_access = False
         if the_creator:
             user_access = True
@@ -347,6 +353,7 @@ def view_one(id):
     logged_in = False
     token = False
     token_entry = ""
+    logged_in_entry = ""
     if "user_id" in session:
         logged_in = True
         temp = user.User.get_user_invitee({"user_id" : session["user_id"], "event_id" : id})

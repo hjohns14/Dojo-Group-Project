@@ -55,38 +55,8 @@
         allowfullscreen>
         </iframe>
     </div>
+
     <div class="view-form">
-    <iframe
-        width="450"
-        height="250"
-        frameborder="0" style="border:0"
-        referrerpolicy="no-referrer-when-downgrade"
-        src= {{location}}
-        allowfullscreen>
-    </iframe>
-    <!-- The div below is supposed to be a display table that will show all the attending registered users, To Be Finished At Some Point -->
-    <!-- <div>
-        <h3>See Registered Users Who are Going!</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Attending</th>
-                    <th>Number of Guests</th>
-                </tr>
-            </thead>
-            <tbody>
-                one_event.users_invites is list of all users who were invited or are attending an event - must loop through this
-                must also redo model to add the name and not just the user_id to do this
-                    <tr>
-                        {# <td>{{invite.name}}</td> #}
-
-                    </tr>
-
-            </tbody>
-        </table>
-    </div> -->
-
     {% if the_creator %}
         <div class="bot-invite">
             <p>ADD FLASH HUUURRRRRR the bin group is "invite"</p>
@@ -168,13 +138,13 @@
             <p>Remember not to share your personal link!</p>
             <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
                 <label for="name">Name</label>
-                <input class="form-control" value={{ token_entry["name"] }} type="text" name="name">
+                <input class="form-control" value="{{ token_entry["name"] }}" type="text" name="name">
                 <label for="email">Email (can't change)</label>
-                <input class="form-control" value={{ token_entry["email"] }} type="date" name="email">
+                <input class="form-control" value="{{ token_entry["email"] }}" type="date" name="email">
                 <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                <input class="form-control" value={ token_entry["attending"] }} type="text" name="attending">
+                <input class="form-control" value="{{ token_entry["attending"] }}" type="text" name="attending">
                 <label for="guest_number">Guest Number</label>
-                <input class="form-control" value={{ token_entry["guest_number"] }} type="text" name="guest_number">
+                <input class="form-control" value="{{ token_entry["guest_number"] }}" type="text" name="guest_number">
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>

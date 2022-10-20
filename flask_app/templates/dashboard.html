@@ -22,8 +22,6 @@
         </div>
     </form>
 </div>
-    
-    <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
     <div class="container-event">
         <div class="my-event-box">
         <h3>My Event Invites</h3>
@@ -33,11 +31,7 @@
                     <th>Name</th>
                     <th>Date</th>
                     <th>Start Time</th>
-                    <!-- <th>end time</th> -->
                     <th>Address</th>
-                    <!-- <th>details</th> -->
-                    <!-- <th>options</th> -->
-                    <!-- <th>plus_one</th> -->
                 </tr>
             </thead>
             </div>
@@ -46,23 +40,14 @@
                     <tr>
                         <td>{{event.name}}</td>
                         <td>{{event.date.strftime("%m/%d/%y")}}</td>
-                        
-                        <!-- This ishow you format the time -->
                         <td>{{event.time_start}}</td>
-                        <!-- <td>{{event.time_end}}</td> -->
-
                         <td>{{event.address}}</td>
-                        <!-- <td>{{event.details}}</td> -->
-                        <!-- <td>{{event.options}}</td> -->
-                        <!-- <td>{{event.plus_one}}</td> -->
                         <td><a class="btn btn-secondary btn-sm active" role="button" href="/events/view/{{event.id}}">view</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    <!--BORDERS
-        <div class="border border-dark">
-        -->
+
         <h3>My Events</h3>
         <table class="table">
             <thead>
@@ -70,11 +55,30 @@
                     <th>Name</th>
                     <th>Date</th>
                     <th>Start Time</th>
-                    <!-- <th>end time</th> -->
                     <th>Address</th>
-                    <!-- <th>details</th> -->
-                    <!-- <th>options</th> -->
-                    <!-- <th>plus_one</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in my_attending_events %}
+                    <tr>
+                        <td>{{event.name}}</td>
+                        <td>{{event.date.strftime("%m/%d/%y")}}</td>
+                        <td>{{event.time_start}}</td>
+                        <td>{{event.address}}</td>
+                        <td><a class="btn btn-secondary btn-sm active" role="button" href="/events/view/{{event.id}}">view</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>My Created Events</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>Address</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,15 +86,8 @@
                     <tr>
                         <td>{{event.name}}</td>
                         <td>{{event.date.strftime("%m/%d/%y")}}</td>
-                        
-                        <!-- This ishow you format the time -->
                         <td>{{event.time_start}}</td>
-                        <!-- <td>{{event.time_end}}</td> -->
-
                         <td>{{event.address}}</td>
-                        <!-- <td>{{event.details}}</td> -->
-                        <!-- <td>{{event.options}}</td> -->
-                        <!-- <td>{{event.plus_one}}</td> -->
                         <td><a class="btn btn-secondary btn-sm active" role="button" href="/events/view/{{event.id}}">view</a></td>
                         <td><a class="btn btn-secondary btn-sm active" role="button" href="/events/edit/{{event.id}}">edit</a></td>
                         <td><a class="btn btn-secondary btn-sm active" role="button" href="/events/delete/{{event.id}}">delete</a></td>
@@ -98,11 +95,6 @@
                 {% endfor %}
             </tbody>
         </table>
-       <!-- </div> -->
-
-    <!-- BORDERS
-        <div class="border border-dark"> -->
-        
             <h3>Public Events</h3>
         <table class="table">
             <thead>
@@ -110,11 +102,7 @@
                     <th>Name</th>
                     <th>Date</th>
                     <th>Start Time</th>
-                    <!-- <th>end time</th> -->
                     <th>Address</th>
-                    <!-- <th>details</th> -->
-                    <!-- <th>options</th> -->
-                    <!-- <th>plus_one</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -122,21 +110,13 @@
                     <tr>
                         <td>{{event.name}}</td>
                         <td>{{event.date.strftime("%m/%d/%y")}}</td>
-                        
-                        <!-- This ishow you format the time -->
                         <td>{{event.time_start}}</td>
-                        <!-- <td>{{event.time_end}}</td> -->
                         <td>{{event.address}}</td>
-                        <!-- <td>{{event.details}}</td> -->
-                        <!-- <td>{{event.options}}</td> -->
-                        <!-- <td>{{event.plus_one}}</td> -->
                         <td><a class="btn btn-secondary btn-sm active" role="button" href="/events/view/{{event.id}}">view</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-       <!-- </div>-->
-
     </div>
 </body>
 </html>
