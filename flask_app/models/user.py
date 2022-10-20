@@ -45,6 +45,14 @@ class User:
         return cls(results[0])
 
     @classmethod
+    def get_non_user_by_email(cls, data):
+        query = """SELECT * FROM non_user_invitees WHERE email=%(email)s"""
+        results = connectToMySQL(cls.db_name).query_db(query, data)
+        if len(results) == 0:
+            return False
+        return cls(results[0])
+
+    @classmethod
     def link_users_invitees(cls, data):
         query = """INSERT INTO user_invitees (user_id, event_id, attending, guest_number)
                     VALUES (%(user_id)s, %(event_id)s, %(attending)s, %(guest_number)s)"""
@@ -53,10 +61,9 @@ class User:
 
     @classmethod
     def non_user_save(cls, data):
-        query = """INSERT INTO non_user_invitees (name, email, attending, guest_number, token)
-                    VALUES (%(name)s, %(email)s, %(attending)s, %(guest_number)s, %(token)s)"""
-        result = connectToMySQL(cls.db_name).query_db(query, data)
-        return result
+        query = """INSERT INTO non_user_invitees (name, email, attending, guest_number, token, event_id)
+                    VALUES (%(name)s, %(email)s, %(attending)s, %(guest_number)s, %(token)s, %(event_id)s)"""
+        return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def update_token(cls, data):
@@ -71,6 +78,25 @@ class User:
         if len(results) == 0:
             return False
         return results[0]
+    
+    @classmethod
+    def swip_swap_kapop(cls, data):
+        query = """DELETE FROM non_user_invitees WHERE token=%(token)s"""
+        result = connectToMySQL(cls.db_name).query_db(query, data)
+        query = """INSERT INTO users (first_name, last_name, email, password)
+            VALUES(%(first_name)s, %(last_name)s, %(email)s, %(password)s)"""
+        user_id = connectToMySQL(cls.db_name).query_db(query, data)
+
+        data2 = {
+            "user_id" : user_id,
+            "event_id" : data["event_id"],
+            "attending" : 3,
+            "guest_number" : "NULL"
+        }
+        query = """INSERT INTO user_invitees (user_id, event_id, attending, guest_number)
+                    VALUES (%(user_id)s, %(event_id)s, %(attending)s, %(guest_number)s)"""
+        connectToMySQL(cls.db_name).query_db(query, data2)
+        return user_id
 
     #Untested method
     @staticmethod
@@ -144,6 +170,8 @@ class User:
         #email address cannot be present in the records for this event that show up in the user_invitee table
         # returns T or F boolean
         return True
+
+# flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
 
     @staticmethod
     def verify_non_user_email(data):

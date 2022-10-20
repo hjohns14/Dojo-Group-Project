@@ -84,6 +84,18 @@ class Event():
         return result
 
     @staticmethod
+    def verify_nUnT_invite(data):
+        #gets dictionary with name, email, guest_number, and attending keys
+        #verify all entries have something
+        #verify attending is either 1 or 2
+        #verify email is not present in users nor non_user_invitees - User.verify_non_user_email(data):
+        #check guest_number is not larger than allowed
+        return True
+        if user.User.get_non_user_by_email():
+            flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
+
+
+    @staticmethod
     def validate_event(data):
         #provide code to validate all aspects of an event
         #maybe options can be blank or add NULL if none?

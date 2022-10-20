@@ -28,43 +28,26 @@
     <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
     <div class="view-form">
         <h1>{{ one_event.name }}</h1>
-        <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Address</th>
-                    <th>Description</th>
-                    <th>Attire and Refreshments</th>
-                    <th>Maximum Number of Allowed Guests</th>
-                    <th>Private (Type "0") or Public Event (Type "1")</th>
-                </tr>
-            </thead>
-            <tbody>
-                    <tr>
-                        <td>{{one_event.date}}</td>
-                        <td>{{one_event.time_start}}</td>
-                        <td>{{one_event.time_end}}</td>
-                        <td>{{one_event.address}}</td>
-                        <td>{{one_event.details}}</td>
-                        <td>{{one_event.options}}</td>
-                        <td>{{one_event.guests}}</td>
-                        <td>{{one_event.public}}</td>
-                    </tr>
-            </tbody>
-        </table>
-        <iframe
-                width="450"
-                height="250"
-                frameborder="0" style="border:0"
-                referrerpolicy="no-referrer-when-downgrade"
-                src= {{location}}
-                allowfullscreen>
-        </iframe>
+        <div class="view-block">
+            <b>Date</b>
+            <p>{{one_event.date}}</p>
+            <b>Start Time</b>
+            <p>{{one_event.time_start}}</p>
+            <b>End Time</b>
+            <p>{{one_event.time_end}}</p>
+            <b>Address</b>
+            <p>{{one_event.address}}</p>
+            <b>Description</b>
+            <p>{{one_event.details}}</p>
+            <b>Attire and Refreshments</b>
+            <p>{{one_event.options}}</p>
+            <b>Maximum Number of Allowed Guests</b>
+            <p>{{one_event.guests}}</p>
+            <b>Private (Type "0") or Public Event (Type "1")</b>
+            <p>{{one_event.public}}</p>
+        </div>
     </div>
-
+    <div class="view-form">        
     <!-- The div below is supposed to be a display table that will show all the attending registered users, To Be Finished At Some Point -->
     <!-- <div>
         <h3>See Registered Users Who are Going!</h3>
@@ -90,7 +73,6 @@
 
     {% if the_creator %}
         <div class="bot-invite">
-            <p>ADD FLASH HUUURRRRRR the bin group is "invite"</p>
             <form action="/events/view/{{ one_event.id }}/invite" method="post">
                 <div class="invite">
                     <h2>Invite someone to the event!</h2>
@@ -113,57 +95,12 @@
             <a href="/">Sign Up</a>
         </div>
         <div class="attend-box">
-            <form action="/events/view/{{ one_event.id }}/nUnT/attend" method="post">
-                <div class="invite">
-                    <h2>Attend</h2>
-                </div>
-                <div class="name-box">
-                    <label for="name">Name</label>
-                    <input type="text" name="name">
-                </div>
-                <div class="email-box">
-                    <label for="email">Email</label>
-                    <input type="text" name="email">
-                </div>
-                <div class="email-box">
-                    <label for="guest_number">Bringing any Additional Guests?</label>
-                    <input type="text" name="guest_number">
-                </div>
-                <div class="email-box">
-                    <label for="attending">Are you Attending? (Please put "1" for yes and "2" for maybe).</label>
-                    <input type="text" name="attending">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <h2>Attend</h2>
+            <form action="">
+                <!-- This form should have items for name, email, additional guests, and attending status to add a random person's entry into non_user_inviteees.  To be finished by someone? -->
             </form>
         </div>
     {% elif (not logged_in) and (token) %}
-        <div>
-            <h2>Register</h2>
-            <p>Want to keep track of your events?  After you create a profile, you can RSVP to this event and see other events around you!</p>
-            <form action="/events/view/{{ one_event.id }}/token/register" method="POST">
-                <div class="form-outline mb-4">
-                    <input type="text" name="first_name" class="form-control" />
-                    <label class="form-label" for="first_name">First Name</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="text" name="last_name" class="form-control" />
-                    <label class="form-label" for="last_name">Last Name</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="text" name="email" class="form-control" />
-                    <label class="form-label" for="email">Email (Same email where you got this link)</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="password" name="password" class="form-control" />
-                    <label class="form-label" for="password">Password</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="password" name="confirm_password" class="form-control" />
-                    <label class="form-label" for="confirm_password">Confirm Password</label>
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg mb-1">Sign Up</button>
-                </form>
-        </div>
         <div class="attend-box">
             <h2>Attend</h2>
             <form method="post" action="">
@@ -177,6 +114,10 @@
                 <input class="form-control" value={{ token_entry["guest_number"] }} type="text" name="guest_number">
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
+        </div>
+        <div>
+            <h2>Register</h2>
+            <!-- this will be a special register that will both create a new user and transfer an existing token entry into a user_invitee table -->
         </div>
     {% elif logged_in %}
         <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->

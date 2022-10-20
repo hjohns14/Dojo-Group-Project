@@ -1,3 +1,4 @@
+from pdb import post_mortem
 from flask import render_template, request, redirect, session, flash, url_for
 from flask_app import app
 from flask_app.models import user, event, maps
@@ -90,7 +91,7 @@ def delete_event(id):
     return redirect("/dashboard")
 
 @app.route("/events/view/<int:id>/invite", methods=["POST"])
-def attend_event(id):
+def attend_event_email(id):
     #checks a user is logged in and verifies his or her user_id matches the creator of the event
     if (not (session.get("user_id", False))) or (not (session.get("user_id", False) == event.Event.get_event_by_id({"id" : id}).user_id)):
         session.clear()
@@ -109,9 +110,6 @@ def attend_event(id):
     invited_user = user.User.get_user_by_email(request.form)
     if invited_user:
         event_link="http://localhost:5000/dashboard"
-        user_input={
-            "email":request.form["email"]
-        }
 
         # is there a way to add a text body to specify the user can view this and RSVP by logging into the dashboard?
         rsvp_email= "rsvptester16@gmail.com"
@@ -119,7 +117,7 @@ def attend_event(id):
         msg.set_content(event_link)
         msg["Subject"] = f'You have been invited to {this_event.name}!'
         msg["From"] = rsvp_email
-        msg["To"] = user_input["email"]
+        msg["To"] = request.form["email"]
 
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
@@ -141,10 +139,14 @@ def attend_event(id):
         data = {
             "name" : request.form["name"],
             "email" : request.form["email"],
-            "guest_number" : "NULL",
             "attending" : "3",
-            "token" : "NULL"
+            "guest_number" : "NULL",
+            "token" : "NULL",
+            "event_id" : id
         }
+        if user.User.get_non_user_by_email():
+            flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
+            return redirect("/events/view/"+str(id))
         non_user_id = user.User.non_user_save(data)
         #generate token
         encoded_message = str(non_user_id).encode()
@@ -153,10 +155,6 @@ def attend_event(id):
 
         event_link=f"http://localhost:5000/events/view/{event_id['id']}/{token}"
 
-        user_input={
-            "email":request.form["email"]
-        }
-
         # is there a way to add a text body to tell the person to not share the personal link and they can update their RSVP by going back there?
         #set_content is body of message
         rsvp_email= "rsvptester16@gmail.com"
@@ -164,13 +162,60 @@ def attend_event(id):
         msg.set_content(event_link)
         msg["Subject"] = f'You have been invited to {this_event.name}!'
         msg["From"] = rsvp_email
-        msg["To"] = user_input["email"]
+        msg["To"] = request.form["email"]
 
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(rsvp_email, GMAIL_CODE)
         server.send_message(msg)
         return redirect("/success")
+
+@app.route("/events/view/<int:id>/nUnT/attend", methods=["POST"])
+def attend_event_nUnT(id):
+    #verify event is public
+    one_event=event.Event.get_event_by_id({"id" : id})
+    if one_event.public == 0:
+        session.clear()
+        flash("Sorry there must have been a url error; try to only click on or to to provided links. Logged out.", "sign_in")
+        return redirect("/")
+
+    if not event.Event.verify_nUnT_invite(request.form):
+        return redirect("/events/view/<int:id>")
+
+    data = {
+    "name" : request.form["name"],
+    "email" : request.form["email"],
+    "attending" : request.form["attending"],
+    "guest_number" : request.form["guest_number"],
+    "token" : "NULL",
+    "event_id" : id
+    }
+    user.User.non_user_save(data)
+    return redirect("/success/2")
+
+@app.route("/events/view/<int:id>/token/register", methods=["POST"])
+def token_user_register(id):
+    #data should have keys for "email" and "token"
+    #add protections to verify not logged in and there is a token in session
+    data = {
+    "first_name" : request.form["first_name"],
+    "last_name" : request.form["last_name"],
+    "email" : request.form["email"],
+    "password" : request.form["password"],
+    "confirm_password" : request.form["confirm_password"],
+    "token" : session["token"][1],
+    "event_id" : id
+    }
+    if not user.User.validate_user(data):
+        #confirm correct flash message bin
+        return redirect("/events/view/<int:id>")
+    if not user.User.verify_non_user_email(data):
+        return redirect("/events/view/<int:id>")
+
+    user_id = user.User.swip_swap_kapop(data)
+    session["user_id"] = user_id
+    return redirect("/")
+
 
 #not sure what 4 following lines with code are doing - can we delete them?
 
@@ -180,10 +225,6 @@ def attend_event(id):
 #     pass
 
 # this is where the view event sub form for a loaded non_user with a token would go
-@app.route("/laterlater")
-def thingie():
-    #data should have keys for "email" and "token"
-    user.User.verify_non_user_email(data)
 
 # visible routes
 
@@ -305,3 +346,6 @@ def view_one(id):
 def success():
     return render_template("success.html")
 
+@app.route("/success/2")
+def success_2():
+    return render_template("success_2.html")
