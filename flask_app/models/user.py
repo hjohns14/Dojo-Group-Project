@@ -160,13 +160,13 @@ class User:
 
 # flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.", "invite")
 
-    @staticmethod
-    def verify_non_user_email(data):
-        #data is a dictionary from a form.  verify that the keys for "email" and "token" are both a part of the same exact entry in non_user_invitees table
-        #flash that email and token need to be same record
-        print(data)
+    # @staticmethod
+    # def verify_non_user_email(data):
+    #     #data is a dictionary from a form.  verify that the keys for "email" and "token" are both a part of the same exact entry in non_user_invitees table
+    #     #flash that email and token need to be same record
+    #     print(data)
         
-        return True
+    #     return True
 
 
     # Get all users !!Unsafe (password)

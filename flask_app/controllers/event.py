@@ -101,16 +101,11 @@ def attend_event_email(id):
         session.clear()
         flash("Sorry this event must exist and you must be the owner of it to edit.", "sign_in")
         return redirect("/")
-    
-    if not user.User.validate_non_user(request.form):
-        return redirect("/events/view/"+str(id))
 
     event_id={
         "id":id
     }
     this_event=event.Event.get_event_by_id(event_id)
-
-    print(len(request.form['name']))
 
     if len(request.form['name'])<2 or len(request.form['email'])<5:
         flash("Must have a name and email to invite someone")
@@ -217,28 +212,27 @@ def attend_event_nUnT(id):
     user.User.non_user_save(data)
     return redirect("/success/2")
 
-@app.route("/events/view/<int:id>/token/register", methods=["POST"])
-def token_user_register(id):
-    #data should have keys for "email" and "token"
-    #add protections to verify not logged in and there is a token in session
-    data = {
-    "first_name" : request.form["first_name"],
-    "last_name" : request.form["last_name"],
-    "email" : request.form["email"],
-    "password" : request.form["password"],
-    "confirm_password" : request.form["confirm_password"],
-    "token" : session["token"][1],
-    "event_id" : id
-    }
-    if not user.User.validate_user(data):
-        #confirm correct flash message bin
-        return redirect("/events/view/<int:id>")
-    if not user.User.verify_non_user_email(data):
-        return redirect("/events/view/<int:id>")
+# @app.route("/events/view/<int:id>/token/register", methods=["POST"])
+# def token_user_register(id):
+#     #data should have keys for "email" and "token"
+#     #add protections to verify not logged in and there is a token in session
+#     data = {
+#     "first_name" : request.form["first_name"],
+#     "last_name" : request.form["last_name"],
+#     "email" : request.form["email"],
+#     "password" : request.form["password"],
+#     "confirm_password" : request.form["confirm_password"],
+#     "token" : session["token"][1],
+#     "event_id" : id
+#     }
+#     if not user.User.validate_user(data):
+#         return redirect(request.referrer)
+#     if not user.User.verify_non_user_email(data):
+#         return redirect(request.referrer)
 
-    user_id = user.User.swip_swap_kapop(data)
-    session["user_id"] = user_id
-    return redirect("/")
+#     user_id = user.User.swip_swap_kapop(data)
+#     session["user_id"] = user_id
+#     return redirect("/")
 
 @app.route("/events/view/<int:id>/token/attend", methods=["POST"])
 def token_attend(id):
