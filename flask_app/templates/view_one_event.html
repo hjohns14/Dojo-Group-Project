@@ -59,13 +59,15 @@
     <div class="view-form">
     {% if the_creator %}
         <div class="bot-invite">
+
             {% with messages = get_flashed_messages(with_categories=true) %}     
                 {% if messages %}                            
                     {% for category, message in messages %}            
-                    <p class="error">{{message}}</p>                   
+                    <p class="error text-center">{{message}}</p>                   
                     {% endfor %}
                 {% endif %}
             {% endwith %}
+
             <form action="/events/view/{{ one_event.id }}/invite" method="post">
                 <div class="invite">
                     <h2>Invite someone to the event!</h2>
@@ -83,32 +85,30 @@
         </div>
     {% elif (not logged_in) and (not token) %}
         <div class="attend-box">
+            <h2>Attend</h2>
             <form action="/events/view/{{ one_event.id }}/nUnT/attend" method="post">
-                <h2 class="text-center">Attend</h2>
+
                 {% with messages = get_flashed_messages(with_categories=true) %}     
                     {% if messages %}                            
                         {% for category, message in messages %}            
-                        <p class="error">{{message}}</p>                   
+                        <p class="error text-center">{{message}}</p>                   
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
-                <div class="name-box">
-                    <label for="name">Name</label>
-                    <input type="text" name="name">
+
+                <label for="name">Name</label>
+                <input class="form-control" type="text" name="name">
+                <label for="email">Email</label>
+                <input class="form-control" type="text" name="email">
+
+                <label for="guest_number">Bringing any Additional Guests?</label>
+                <input class="form-control" type="text" name="guest_number">
+
+                <label for="attending">Are you Attending? (Please put "1" for yes and "2" for maybe).</label>
+                <input class="form-control" type="text" name="attending">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-                <div class="email-box">
-                    <label for="email">Email</label>
-                    <input type="text" name="email">
-                </div>
-                <div class="email-box">
-                    <label for="guest_number">Bringing any Additional Guests?</label>
-                    <input type="text" name="guest_number">
-                </div>
-                <div class="email-box">
-                    <label for="attending">Are you Attending? (Please put "1" for yes and "2" for maybe).</label>
-                    <input type="text" name="attending">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
         <div class="text-center">
@@ -117,16 +117,18 @@
             <a href="/">Sign Up</a>
         </div>
     {% elif (not logged_in) and (token) %}
-        <div class="attend-box">
+        <div class="attend-box" >
             <h2>Attend</h2>
             <p>Remember not to share your personal link!</p>
+
             {% with messages = get_flashed_messages(with_categories=true) %}     
                 {% if messages %}                            
                     {% for category, message in messages %}            
-                    <p class="error">{{message}}</p>                   
+                    <p class="error text-center">{{message}}</p>                   
                     {% endfor %}
                 {% endif %}
             {% endwith %}
+
             <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
                 <label for="name">Name</label>
                 <input class="form-control" value="{{ token_entry["name"] }}" type="text" name="name">
@@ -136,7 +138,9 @@
                 <input class="form-control" value="{{ token_entry["attending"] }}" type="text" name="attending">
                 <label for="guest_number">Guest Number</label>
                 <input class="form-control" value="{{ token_entry["guest_number"] }}" type="text" name="guest_number">
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
             </form>
         </div>
         <div class="text-center">
@@ -148,6 +152,13 @@
         <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
         <div class="attend-box">
             <h2>Attend or Update RSVP</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}     
+                {% if messages %}                            
+                    {% for category, message in messages %}            
+                    <p class="error text-center">{{message}}</p>                   
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <form action="/events/view/{{ one_event.id }}/logged-in/attend" method="post">
                 <div>
                 <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>

@@ -231,10 +231,6 @@ def token_user_register(id):
 
 @app.route("/events/view/<int:id>/token/attend", methods=["POST"])
 def token_attend(id):
-    #make any protected routes for logged_in or tokens?
-    if not event.Event.verify_T_invite(request.form):
-        return redirect("/events/view/<int:id>")
-
     data = {
     "name" : request.form["name"],
     "email" : request.form["email"],
@@ -243,6 +239,10 @@ def token_attend(id):
     "token" : session["token"][1],
     "event_id" : id
     }
+
+    if not event.Event.verify_T_invite(data):
+        return redirect(request.referrer)
+
     if not user.User.verify_non_user_email(data):
         return redirect("/events/view/<int:id>")
 
@@ -260,6 +260,10 @@ def logged_in_attend(id):
     "guest_number" : request.form["guest_number"],
     }
 
+    if len(data["attending"]) < 1:
+        flash("Must select whether you are attending or not to RSVP.")
+        return redirect(request.referrer)
+
     temp = user.User.get_user_invitee({"user_id" : session["user_id"], "event_id" : id})
     if temp:
         user.User.user_invitee_update(data)
@@ -268,12 +272,6 @@ def logged_in_attend(id):
     
     return redirect("/success/3")
 
-#not sure what 4 following lines with code are doing - can we delete them?
-
-# send email invite
-# app.route("/events/view/<int:id>/attend")
-# def invite_one(id):
-#     pass
 
 # this is where the view event sub form for a loaded non_user with a token would go
 

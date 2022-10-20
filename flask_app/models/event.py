@@ -91,7 +91,6 @@ class Event():
     @staticmethod
     def verify_nUnT_invite(data):
         is_valid=True
-        #gets dictionary with name, email, guest_number, and attending keys
         if len(data['name'].strip()) < 2:
             is_valid=False
             flash("Name must be at least 2 characters.")
@@ -118,10 +117,24 @@ class Event():
     @staticmethod
     def verify_T_invite(data):
         #gets dictionary with name, email, guest_number, and attending keys
-        #verify all entries have something
-        #verify attending is either 1 or 2
         #check guest_number is not larger than allowed
-        return True
+        is_valid=True
+        if len(data['name'].strip()) < 2:
+            is_valid=False
+            flash("Name must be at least 2 characters.")
+        if len(data['email'].strip()) < 5:
+            is_valid=False
+            flash("Email must be at least 5 characters.")
+        if not EMAIL_REGEX.match(data["email"].strip()):
+            flash('Invalid Email', 'register')
+            is_valid = False
+        if len(data['guest_number'].strip()) < 1:
+            is_valid=False
+            flash("Must specify number of guests you are bringing including yourself.")
+        if len(data['attending'].strip()) < 1:
+            is_valid=False
+            flash("Please select if you are attending or not.")
+        return is_valid
 
 
     @staticmethod
