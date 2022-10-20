@@ -40,7 +40,6 @@ class User:
         # Successfull DB test
         query = "SELECT * FROM users WHERE email=%(email)s"
         results = connectToMySQL(cls.db_name).query_db(query, data)
-        print(results)
         if not results:
             return False
         return cls(results[0])
@@ -131,7 +130,7 @@ class User:
         #checks email is not already in use
         is_valid = True
         if len(user['first_name']) < 2 or len(user['last_name']) < 2:
-            flash("Field Required: Name")
+            flash("Field Required: Name", "register")
             is_valid = False
 
         if not EMAIL_REGEX.match(user['email']):

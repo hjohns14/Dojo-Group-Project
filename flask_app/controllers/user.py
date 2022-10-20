@@ -46,9 +46,9 @@ def register():
 
     if not user.User.validate_user(request.form):
         return redirect("/")
-    if user.User.get_user_by_email(data['email']):
+    if user.User.get_user_by_email(data):
         flash("Email already in system", "register")
-    print(data['email'])
+        return redirect('/')
 
     hash_pass = bcrypt.generate_password_hash(request.form["password"])
     data["password"] = hash_pass
