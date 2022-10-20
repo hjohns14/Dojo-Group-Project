@@ -1,6 +1,10 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from flask_app.models import user
+import re
+
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+
 
 class Event():
     db_name = 'rsvp_schema'
@@ -86,19 +90,30 @@ class Event():
 
     @staticmethod
     def verify_nUnT_invite(data):
+        is_valid=True
         #gets dictionary with name, email, guest_number, and attending keys
-        if len(data['name']) < 2:
+        if len(data['name'].strip()) < 2:
+            is_valid=False
             flash("Name must be at least 2 characters.")
-        if len(data['email']) < 2:
-            flash("Email must be at least 2 characters.")
-        if len(data['guest_number']) < 1:
+        if len(data['email'].strip()) < 5:
+            is_valid=False
+            flash("Email must be at least 5 characters.")
+        if not EMAIL_REGEX.match(data["email"].strip()):
+            flash('Invalid Email', 'register')
+            is_valid = False
+        if len(data['guest_number'].strip()) < 1:
+            is_valid=False
             flash("Must specify number of guests you are bringing including yourself.")
-        if len(data['attending']) < 1:
+        if len(data['attending'].strip()) < 1:
+            is_valid=False
             flash("Please select if you are attending or not.")
-        if user.User.get_non_user_by_email():
-            flash("Sorry, this user has already been invited to your event. Ask them to check their emails, including the junk box.")
-        #verify email is not present in users nor non_user_invitees - User.verify_non_user_email(data):
-        return True
+        if user.User.get_non_user_by_email(data):
+            is_valid=False
+            flash("You have already been invited to this event, please check your email for the invite.")
+        if user.User.get_user_by_email(data):
+            is_valid=False
+            flash("Please sign into your account to RSVP to the event.")
+        return is_valid
 
     @staticmethod
     def verify_T_invite(data):

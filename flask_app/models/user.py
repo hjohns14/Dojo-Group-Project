@@ -201,6 +201,8 @@ class User:
     def verify_non_user_email(data):
         #data is a dictionary from a form.  verify that the keys for "email" and "token" are both a part of the same exact entry in non_user_invitees table
         #flash that email and token need to be same record
+        print(data)
+        
         return True
 
 

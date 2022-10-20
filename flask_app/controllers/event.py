@@ -187,9 +187,6 @@ def attend_event_nUnT(id):
         flash("Sorry there must have been a url error; try to only click on or to to provided links. Logged out.", "sign_in")
         return redirect("/")
 
-    if not event.Event.verify_nUnT_invite(request.form):
-        return redirect("/events/view/<int:id>")
-
     data = {
     "name" : request.form["name"],
     "email" : request.form["email"],
@@ -198,7 +195,11 @@ def attend_event_nUnT(id):
     "token" : "NULL",
     "event_id" : id
     }
-    if data["attending"] > one_event.guests:
+
+    if not event.Event.verify_nUnT_invite(data):
+        return redirect(request.referrer)
+
+    if data["guest_number"] > one_event.guests:
         flash("Your number of guests must be less than the maximum number of guests allowed.")
         return redirect(request.referrer)
 

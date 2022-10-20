@@ -84,9 +84,14 @@
     {% elif (not logged_in) and (not token) %}
         <div class="attend-box">
             <form action="/events/view/{{ one_event.id }}/nUnT/attend" method="post">
-                <div class="invite">
-                    <h2>Attend</h2>
-                </div>
+                <h2 class="text-center">Attend</h2>
+                {% with messages = get_flashed_messages(with_categories=true) %}     
+                    {% if messages %}                            
+                        {% for category, message in messages %}            
+                        <p class="error">{{message}}</p>                   
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <div class="name-box">
                     <label for="name">Name</label>
                     <input type="text" name="name">
@@ -115,6 +120,13 @@
         <div class="attend-box">
             <h2>Attend</h2>
             <p>Remember not to share your personal link!</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}     
+                {% if messages %}                            
+                    {% for category, message in messages %}            
+                    <p class="error">{{message}}</p>                   
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
             <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
                 <label for="name">Name</label>
                 <input class="form-control" value="{{ token_entry["name"] }}" type="text" name="name">
@@ -127,32 +139,10 @@
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
-        <div>
+        <div class="text-center">
             <h2>Register</h2>
-            <p>Want to keep track of your events?  After you create a profile, you can RSVP to this event and see other events around you!</p>
-            <form action="/events/view/{{ one_event.id }}/token/register" method="POST">
-                <div class="form-outline mb-4">
-                    <input type="text" name="first_name" class="form-control" />
-                    <label class="form-label" for="first_name">First Name</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="text" name="last_name" class="form-control" />
-                    <label class="form-label" for="last_name">Last Name</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="text" name="email" class="form-control" />
-                    <label class="form-label" for="email">Email (Same email where you got this link)</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="password" name="password" class="form-control" />
-                    <label class="form-label" for="password">Password</label>
-                </div>
-                <div class="form-outline mb-4">
-                    <input type="password" name="confirm_password" class="form-control" />
-                    <label class="form-label" for="confirm_password">Confirm Password</label>
-                </div>
-                <button type="submit" class="btn btn-primary btn-lg mb-1">Sign Up</button>
-                </form>
+            <p>Want to keep track of your events and have the option to change your RSVP?</p>
+            <a href="/">Sign Up</a>
         </div>
     {% elif logged_in %}
         <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
