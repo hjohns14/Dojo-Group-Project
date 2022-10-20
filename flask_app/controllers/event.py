@@ -199,7 +199,7 @@ def attend_event_nUnT(id):
     if not event.Event.verify_nUnT_invite(data):
         return redirect(request.referrer)
 
-    if data["guest_number"] > one_event.guests:
+    if int(data["guest_number"]) > int(one_event.guests):
         flash("Your number of guests must be less than the maximum number of guests allowed.")
         return redirect(request.referrer)
 
@@ -240,18 +240,23 @@ def token_attend(id):
     "event_id" : id
     }
 
+
     if not event.Event.verify_T_invite(data):
         return redirect(request.referrer)
 
     if not user.User.verify_non_user_email(data):
-        return redirect("/events/view/<int:id>")
+        return redirect(request.referrer)
+    
+    if int(data["guest_number"]) > int(one_event.guests):
+        flash("Your number of guests must be less than the maximum number of guests allowed.")
+        return redirect(request.referrer)
 
     user.User.non_user_update(data)
     return redirect("/success/3")
 
 @app.route("/events/view/<int:id>/logged-in/attend", methods=["POST"])
 def logged_in_attend(id):
-    #make any protected routes for logged_in
+    one_event=event.Event.get_event_by_id2({"id" : id})
 
     data = {
     "user_id" : session["user_id"],
@@ -259,6 +264,12 @@ def logged_in_attend(id):
     "attending" : request.form["attending"],
     "guest_number" : request.form["guest_number"],
     }
+
+    if int(data["guest_number"]) > int(one_event.guests):
+        print(one_event.guests,"guest")
+        print(data["guest_number"])
+        flash("Your number of guests must be less than the maximum number of guests allowed.")
+        return redirect(request.referrer)
 
     if len(data["attending"]) < 1:
         flash("Must select whether you are attending or not to RSVP.")

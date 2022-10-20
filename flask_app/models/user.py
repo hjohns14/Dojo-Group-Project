@@ -94,6 +94,7 @@ class User:
         print(results)
         if len(results) == 0:
             return False
+        print(results[0])
         return results[0]
     
     @classmethod

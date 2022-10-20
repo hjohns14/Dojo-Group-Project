@@ -131,13 +131,13 @@
 
             <form method="post" action="/events/view/{{ one_event.id }}/token/attend">
                 <label for="name">Name</label>
-                <input class="form-control" value="{{ token_entry["name"] }}" type="text" name="name">
+                <input class="form-control" value="{{ token_entry['name'] }}" type="text" name="name">
                 <label for="email">Email (can't change)</label>
-                <input class="form-control" value="{{ token_entry["email"] }}" type="email" name="email">
+                <input class="form-control" value="{{ token_entry['email'] }}" type="email" name="email">
                 <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                <input class="form-control" value="{{ token_entry["attending"] }}" type="text" name="attending">
+                <input class="form-control" value="{{ token_entry['attending'] }}" type="text" name="attending">
                 <label for="guest_number">Guest Number</label>
-                <input class="form-control" value="{{ token_entry["guest_number"] }}" type="text" name="guest_number">
+                <input class="form-control" value="{{ token_entry['guest_number'] }}" type="text" name="guest_number">
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
@@ -149,7 +149,6 @@
             <a href="/">Sign Up</a>
         </div>
     {% elif logged_in %}
-        <!-- this form below will mark a logged-in user as attending an event on the user_invitee table -->
         <div class="attend-box">
             <h2>Attend or Update RSVP</h2>
             {% with messages = get_flashed_messages(with_categories=true) %}     
@@ -160,14 +159,13 @@
                 {% endif %}
             {% endwith %}
             <form action="/events/view/{{ one_event.id }}/logged-in/attend" method="post">
-                <div>
-                <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                <input class="form-control" type="text" value="{{ logged_in_entry["attending"] }}" name="attending">
-                <label for="guest_number">Additional Guests</label>
-                <input type="text" value="{{ logged_in_entry["guest_number"] }}" name="guest_number">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <!-- hidden input with session["user_id"] -->
+                    <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
+                    <input class="form-control" type="text" value="{{ logged_in_entry['attending'] }}" name="attending">
+                    <label for="guest_number">Additional Guests</label>
+                    <input class="form-control" type="text" value="{{ logged_in_entry['guest_number'] }}" name="guest_number">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
             </form>
         </div>
     {% endif %}

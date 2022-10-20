@@ -76,6 +76,15 @@ class Event():
         return event_obj
 
     @classmethod
+    def get_event_by_id2(cls, data):
+        query ="""SELECT * FROM events WHERE id=%(id)s"""
+        result = connectToMySQL(cls.db_name).query_db(query, data)
+        if len(result) == 0:
+            return False
+        event_obj = cls(result[0])
+        return event_obj
+
+    @classmethod
     def update(cls, data):
         # Untested in DB
         query = "UPDATE events SET name=%(name)s, date=%(date)s, time_start=%(time_start)s, time_end=%(time_end)s, address=%(address)s, details=%(details)s, options=%(options)s, guests=%(guests)s, public=%(public)s, user_id=%(user_id)s WHERE id=%(id)s"
