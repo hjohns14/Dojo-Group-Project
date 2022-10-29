@@ -406,7 +406,8 @@ def view_one(id):
     format_start_time = time_start.strftime('%I:%M %p')
     time_end=one_event.time_end
     format_end_time = time_end.strftime('%I:%M %p')
-    return render_template("view_one_event.html", format_start_time=format_start_time, format_end_time=format_end_time, one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
+    formatted_date = one_event.date.strftime('%m/%d/%Y')
+    return render_template("view_one_event.html", formatted_date=formatted_date, format_start_time=format_start_time, format_end_time=format_end_time, one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
 
 # # view one
 # @app.route("/events/view/<int:id>")
