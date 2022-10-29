@@ -48,9 +48,13 @@
 
             <b>Maximum Number of Allowed Guests</b>
             <p>{{one_event.guests}}</p>
-            
-            <b>Private (Type "0") or Public Event (Type "1")</b>
-            <p>{{one_event.public}}</p>
+
+            <b>Public or private event?</b>
+            {% if one_event.public == 0 %}
+            <p>Private</p>
+            {% else %}
+            <p>Public</p>
+            {% endif %}
         </div>
         <iframe
         width="450"
