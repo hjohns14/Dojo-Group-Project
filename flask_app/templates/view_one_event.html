@@ -25,24 +25,30 @@
         </form>
     </div>
     {% endif %}
-    <!-- below is just a test to make sure data is showing from my controller, do as you please with the events! -->
     <div class="view-form">
         <h1>{{ one_event.name }}</h1>
         <div class="view-block">
             <b>Date</b>
             <p>{{one_event.date}}</p>
+
             <b>Start Time</b>
-            <p>{{one_event.time_start}}</p>
+            <p>{{format_start_time}}</p>
+
             <b>End Time</b>
-            <p>{{one_event.time_end}}</p>
+            <p>{{format_end_time}}</p>
+
             <b>Address</b>
             <p>{{one_event.address}}</p>
+
             <b>Description</b>
             <p>{{one_event.details}}</p>
+
             <b>Attire and Refreshments</b>
             <p>{{one_event.options}}</p>
+
             <b>Maximum Number of Allowed Guests</b>
             <p>{{one_event.guests}}</p>
+            
             <b>Private (Type "0") or Public Event (Type "1")</b>
             <p>{{one_event.public}}</p>
         </div>

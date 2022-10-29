@@ -5,6 +5,7 @@ import os, smtplib, hashlib
 from dotenv import load_dotenv
 from email.message import EmailMessage
 import re
+from datetime import datetime
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
@@ -401,8 +402,11 @@ def view_one(id):
         token_entry = user.User.get_non_user_invitee_by_token({"token" : session["token"][1]})
     
     location = maps.getmapembed(one_event.address)
-
-    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
+    time_start=one_event.time_start
+    format_start_time = time_start.strftime('%I:%M %p')
+    time_end=one_event.time_end
+    format_end_time = time_end.strftime('%I:%M %p')
+    return render_template("view_one_event.html", format_start_time=format_start_time, format_end_time=format_end_time, one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
 
 # # view one
 # @app.route("/events/view/<int:id>")
