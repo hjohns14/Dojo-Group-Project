@@ -99,8 +99,9 @@ body {
 }
 
 .view-block{
-    display: flex;
-    flex-direction: column;
+    text-align: center;
+    border: solid;
+    width: 50%;
 }
 
 .name-box {
@@ -119,17 +120,6 @@ body {
     display:flex;
     justify-content: center;
 }
-/* Maybe with these colors
-.bot-card {
-    background-color: rgb(72, 189, 212);
-}
-
-.top-card {
-    background-color: #1bb58e;
-}
-*/
-
-
 
 .error {
     color: red;
