@@ -204,6 +204,11 @@ def attend_event_nUnT(id):
     if not event.Event.verify_nUnT_invite(data):
         return redirect(request.referrer)
 
+    if len(data["attending"]) < 1:
+        flash("Must select whether you are attending or not to RSVP.")
+        return redirect(request.referrer)
+
+
     if data["guest_number"] == "":
         data["guest_number"] = 0
 
@@ -251,6 +256,10 @@ def token_attend(id):
 
 
     if not event.Event.verify_T_invite(data):
+        return redirect(request.referrer)
+
+    if len(data["attending"]) < 1:
+        flash("Must select whether you are attending or not to RSVP.")
         return redirect(request.referrer)
 
     
@@ -381,7 +390,6 @@ def view_one(id):
                 user_access = True
         if not ((user_access) or (session.get("token", [False, False])[0] == one_event.id)):
             session.clear()
-            flash("Sorry there must have been a url error; try to only click on or to to provided links. Logged out.", "sign_in")
             return redirect("/")
 
     logged_in = False

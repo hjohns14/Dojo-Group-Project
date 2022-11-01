@@ -116,8 +116,21 @@
                 <label for="guest_number">Bringing any Additional Guests?</label>
                 <input class="form-control" type="text" name="guest_number">
 
-                <label for="attending">Are you Attending? (Please put "1" for yes and "2" for maybe).</label>
-                <input class="form-control" type="text" name="attending">
+                <label for="attending">Are you Attending?</label>
+                <select class="form-control" name="attending" id="attending">
+                    <option value="">
+                        Please choose an option
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="2">
+                        Maybe
+                    </option>
+                </select>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -146,8 +159,21 @@
                 <input class="form-control" value="{{ token_entry['name'] }}" type="text" name="name">
                 <label for="email">Email</label>
                 <input class="form-control" value="{{ token_entry['email'] }}" type="email" name="email" readonly>
-                <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                <input class="form-control" value="{{ token_entry['attending'] }}" type="text" name="attending">
+                <label for="attending">Are you Attending?</label>
+                <select class="form-control" name="attending" id="attending">
+                    <option value="">
+                        Please choose an option
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="2">
+                        Maybe
+                    </option>
+                </select>
                 <label for="guest_number">Guest Number</label>
                 <input class="form-control" value="{{ token_entry['guest_number'] }}" type="text" name="guest_number">
                 <div class="text-center">
@@ -171,8 +197,21 @@
                 {% endif %}
             {% endwith %}
             <form action="/events/view/{{ one_event.id }}/logged-in/attend" method="post">
-                    <label for="attending">Attending ("0" for no, "1" for yes, "2" for maybe)</label>
-                    <input class="form-control" type="text" value="{{ logged_in_entry['attending'] }}" name="attending">
+                <label for="attending">Are you Attending?</label>
+                <select class="form-control" name="attending" id="attending">
+                    <option value="">
+                        Please choose an option
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="2">
+                        Maybe
+                    </option>
+                </select>
                     <label for="guest_number">Additional Guests</label>
                     <input class="form-control" type="text" value="{{ logged_in_entry['guest_number'] }}" name="guest_number">
                     <div class="text-center">
