@@ -104,6 +104,20 @@ body {
     width: 50%;
 }
 
+.description {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+    border: solid;
+}
+.details {
+    /* display: flex; */
+    /* justify-content: center; */
+    flex-direction: column;
+    border: solid red;
+    /* width: 50%; */
+}
+
 .name-box {
     padding-bottom: 25px;
     padding-top: 25px; 

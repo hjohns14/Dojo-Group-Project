@@ -5,7 +5,8 @@ import os, smtplib, hashlib
 from dotenv import load_dotenv
 from email.message import EmailMessage
 import re
-from datetime import datetime
+# from datetime import datetime
+import time
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
@@ -378,7 +379,7 @@ def view_one(id):
         for invite in one_event.users_invites:
             if session["user_id"] == invite[0]:
                 user_access = True
-        if not ((user_access) or (session.get("token", [False, False])[0] == event_data.id)):
+        if not ((user_access) or (session.get("token", [False, False])[0] == one_event.id)):
             session.clear()
             flash("Sorry there must have been a url error; try to only click on or to to provided links. Logged out.", "sign_in")
             return redirect("/")
@@ -402,12 +403,7 @@ def view_one(id):
         token_entry = user.User.get_non_user_invitee_by_token({"token" : session["token"][1]})
     
     location = maps.getmapembed(one_event.address)
-    time_start=one_event.time_start
-    format_start_time = time_start.strftime('%I:%M %p')
-    time_end=one_event.time_end
-    format_end_time = time_end.strftime('%I:%M %p')
-    formatted_date = one_event.date.strftime('%m/%d/%Y')
-    return render_template("view_one_event.html", formatted_date=formatted_date, format_start_time=format_start_time, format_end_time=format_end_time, one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
+    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
 
 # # view one
 # @app.route("/events/view/<int:id>")

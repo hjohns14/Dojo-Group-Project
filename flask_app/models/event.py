@@ -76,6 +76,8 @@ class Event():
         return event_obj
 
 
+
+
     @classmethod
     def update(cls, data):
         # Untested in DB
