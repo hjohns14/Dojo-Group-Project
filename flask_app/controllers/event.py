@@ -409,9 +409,10 @@ def view_one(id):
     if "token" in session:
         token = True
         token_entry = user.User.get_non_user_invitee_by_token({"token" : session["token"][1]})
-    
+
+    formatted_date = one_event.date.strftime('%m/%d/%Y')
     location = maps.getmapembed(one_event.address)
-    return render_template("view_one_event.html", one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
+    return render_template("view_one_event.html", formatted_date=formatted_date, one_event=one_event, the_creator=the_creator, logged_in=logged_in, logged_in_entry=logged_in_entry, token=token, token_entry=token_entry, location=location)
 
 # # view one
 # @app.route("/events/view/<int:id>")

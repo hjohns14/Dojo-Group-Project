@@ -1,7 +1,11 @@
 #run "pipenv install googlemaps"
 import googlemaps
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-apikey = "AIzaSyBrDzRBHS7sBuOr2wOUVMCiILy2OBYO9t4"
+
+apikey = os.getenv("maps_api")
 
 def getmapembed(address):
     try:

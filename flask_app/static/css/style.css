@@ -106,16 +106,18 @@ body {
 
 .description {
     display: flex;
-    justify-content: space-around;
-    width: 50%;
     border: solid;
 }
+
 .details {
-    /* display: flex; */
-    /* justify-content: center; */
+    display: flex;
+    justify-content: center;
     flex-direction: column;
     border: solid red;
-    /* width: 50%; */
+}
+
+.table th{
+    border-top: none;
 }
 
 .name-box {

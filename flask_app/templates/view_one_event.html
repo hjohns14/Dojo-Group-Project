@@ -26,38 +26,87 @@
     </div>
     {% endif %}
     <div class="view-form">
-        <h1>{{ one_event.name }}</h1>
         <div class="view-block">
-            <div class="time_date">
-                <h2>When</h2>
-                <p>{{formatted_date}}</p>
-                <p>{{one_event.time_start}} to {{one_event.time_end}}</p>
-            </div>
-
+            <h1>{{ one_event.name }}</h1>
             <div class="details">
+                <h2>When</h2>
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex justify-content-center">
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-center">
+                            <td>{{formatted_date}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex justify-content-center">
+                            <th scope="col">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-center">
+                            <td>{{one_event.time_start}} to {{one_event.time_end}}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <h2>What and Who</h2>
-                <div class="description">
-                    <div>
-                        <p>Description</p>
-                        <p>{{one_event.details}}</p>
-                    </div>
-                    <div>
-                        <p>Attire and Refreshments</p>
-                        <p>{{one_event.options}}</p>
-                    </div>
-                </div>
-
-                <div>
-                    <p>How many guests can you bring? {{one_event.guests}}</p>
-                </div>
-                <div>
-                    <p>Public or private event?</p>
-                    {% if one_event.public == 0 %}
-                    <p>Private</p>
-                    {% else %}
-                    <p>Public</p>
-                    {% endif %}
-                </div>
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex justify-content-center">
+                            <th scope="col">Attire and Refreshments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-center">
+                            <td>{{one_event.details}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex justify-content-center">
+                            <th scope="col ">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-center">
+                            <td>{{one_event.options}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex justify-content-center">
+                            <th scope="col">How many guests can you bring?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-center">
+                            <td>{{one_event.guests}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr class="d-flex justify-content-center">
+                            <th scope="col ">Public or private event?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-center">
+                            {% if one_event.public == 0 %}
+                            <td>Private</td>
+                            {% else %}
+                            <td>Public</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="location">
                 <h2>Where</h2>
