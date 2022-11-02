@@ -75,7 +75,11 @@ class Event():
             event_obj.users_invites.append(record_list)
         return event_obj
 
-
+    # @classmethod
+    # def time_test_id(cls, data):
+    #     query = """SELECT TIME_FORMAT(time_start, '%%r') FROM events where id=%(id)s"""
+    #     result = connectToMySQL(cls.db_name).query_db(query, data)
+    #     print(result)
 
 
     @classmethod

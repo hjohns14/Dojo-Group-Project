@@ -157,14 +157,12 @@ def attend_event_email(id):
             "token" : "NULL",
             "event_id" : id
         }
-
-        
-        print(this_event.id)
-        invited_check=user.User.get_non_user_by_email(data)
-        if invited_check:
-            all_invited=user.User.get_all_non_users()
-            check_if_email_invited_to_event = [d for d in all_invited if d['event_id'] == invited_check['event_id']]
-            if check_if_email_invited_to_event:
+        all_invited=user.User.get_all_non_users()
+        check_if_email_invited_to_event = [k for k in all_invited if k['email'] == data["email"]]
+        if check_if_email_invited_to_event:
+            check_if_invited_this_event=[k for k in check_if_email_invited_to_event if k['event_id'] == data["event_id"]]
+            if check_if_invited_this_event:
+                print(check_if_invited_this_event)
                 flash("Sorry, this user has already been invited to your event. Ask them to check their emails, including the junk box.")
                 return redirect("/events/view/"+str(id))
 
@@ -382,7 +380,6 @@ def view_one(id):
         "id":id
     }
     one_event=event.Event.get_event_by_id(event_data)
-
     #change ability to view page if event is private
     the_creator = False
     if session.get("user_id", False) == one_event.user_id:
