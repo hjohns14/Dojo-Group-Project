@@ -30,7 +30,7 @@
             <input class="form-control" type="time" name="time_start">
             <label for="time_end">End Time</label>
             <input class="form-control" type="time" name="time_end">
-            <label for="address">Address</label>
+            <label for="address">Address (123 Sesame St, Seattle, WA, 90210)</label>
             <input class="form-control" type="text" name="address">
             <label for="details">Description</label>
             <input class="form-control" type="text" name="details">
@@ -50,13 +50,13 @@
                     Public
                 </option>
             </select>
-            <div class="create-cancel-edit">
-            <button class="btn btn-primary">Submit</button>
-            <form action="/dashboard">
-                    <button class="btn btn-danger" type="submit">Cancel</button>
-            </form>
+            <div class="create-cancel-edit d-flex justify-content-center">
+                <button class="btn btn-primary">Submit</button>
             </div>
-        </form>
+    </form>
+    <form action="/dashboard">
+            <button class="btn btn-danger mt-3">Cancel</button>
+    </form>
     </div>
 </body>
 </html>

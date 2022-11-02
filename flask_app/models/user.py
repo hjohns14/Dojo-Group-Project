@@ -48,10 +48,20 @@ class User:
     def get_non_user_by_email(cls, data):
         query = """SELECT * FROM non_user_invitees WHERE email=%(email)s"""
         results = connectToMySQL(cls.db_name).query_db(query, data)
-        print(results)
+        # print(results)
         if len(results) == 0:
             return False
         return results[0]
+    
+    @classmethod
+    def get_all_non_users(cls):
+        query = """SELECT * FROM non_user_invitees"""
+        results = connectToMySQL(cls.db_name).query_db(query)
+        # print(results)
+        if len(results) == 0:
+            return False
+        return results
+
 
     @classmethod
     def link_users_invitees(cls, data):

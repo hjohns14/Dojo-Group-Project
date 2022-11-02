@@ -157,9 +157,17 @@ def attend_event_email(id):
             "token" : "NULL",
             "event_id" : id
         }
-        if user.User.get_non_user_by_email(data):
-            flash("Sorry, this user has already been invited to your event.  Ask them to check their emails, including the junk box.")
-            return redirect("/events/view/"+str(id))
+
+        
+        print(this_event.id)
+        invited_check=user.User.get_non_user_by_email(data)
+        if invited_check:
+            all_invited=user.User.get_all_non_users()
+            check_if_email_invited_to_event = [d for d in all_invited if d['event_id'] == invited_check['event_id']]
+            if check_if_email_invited_to_event:
+                flash("Sorry, this user has already been invited to your event. Ask them to check their emails, including the junk box.")
+                return redirect("/events/view/"+str(id))
+
         non_user_id = user.User.non_user_save(data)
         #generate token
         encoded_message = str(non_user_id).encode()
@@ -168,8 +176,6 @@ def attend_event_email(id):
 
         event_link=f"http://localhost:5000/events/view/{event_id['id']}/{token}"
 
-        # is there a way to add a text body to tell the person to not share the personal link and they can update their RSVP by going back there?
-        #set_content is body of message
         rsvp_email= "rsvptester16@gmail.com"
         msg = EmailMessage()
         msg.set_content(event_link)
